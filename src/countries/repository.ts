@@ -17,8 +17,8 @@ const getAllCountries = async (): Promise<Country[]> => {
     })
 }
 
-const getCountriesByContinentId = async (continentId: number): Promise<Country[]> => {
-    const [results] = await connection.query<CountryDB[]>('SELECT * FROM countries WHERE continent_id = ?', [continentId])
+const getCountriesByContinentIds = async (ids: number[]): Promise<Country[]> => {
+    const [results] = await connection.query<CountryDB[]>(`SELECT * FROM countries WHERE continent_id IN (${ids.join(',')})`)
     return results.map(countryDB => {
         const country: Country = {
             countryId: countryDB.country_id,
@@ -65,4 +65,4 @@ const createCountry = async (continentId: number, name: string, galleryId: numbe
     };
 }
 
-export default {getAllCountries, getCountriesByContinentId, getCountryById, checkCountryExists, createCountry}
+export default {getAllCountries, getCountriesByContinentIds, getCountryById, checkCountryExists, createCountry}

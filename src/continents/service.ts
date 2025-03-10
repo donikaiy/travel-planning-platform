@@ -1,15 +1,19 @@
 import continentRepository from '../continents/repository';
-import {getCountriesByContinentId} from "../countries/service";
+import {getCountriesByContinentIds} from "../countries/service";
 
 export const getAllContinents = async () => {
     const continents = await continentRepository.getAllContinents()
 
-    return await Promise.all(continents.map(async (continent) => {
-        const countries = await getCountriesByContinentId(continent.continentId)
+    const continentIds = continents.map(continent => continent.continentId)
+
+    const countries = await getCountriesByContinentIds(continentIds);
+
+    return continents.map((continent) => {
+        const continentCountries = countries.filter(country => country.continentId === continent.continentId);
 
         return {
             ...continent,
-            countries: countries,
-        }
-    }))
+            countries: continentCountries
+        };
+    })
 }
