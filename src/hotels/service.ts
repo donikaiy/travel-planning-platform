@@ -2,9 +2,19 @@ import {getAllServicesByHotelId} from "../hotel_services/service";
 import hotelRepository from "../hotels/repository";
 import {getAllRoomsByHotelId} from "../rooms/service";
 import {getAllNearbyAttractionsByHotelId} from "../nearby_attractions/service";
+import {getRatingByHotelId} from "../famousHotelsRating/service";
 
 export const getAllHotels = async () => {
-    return await hotelRepository.getAllHotels()
+    const hotels = await hotelRepository.getAllHotels();
+
+    return await Promise.all(hotels.map(async (hotel) => {
+        const rating = await getRatingByHotelId(hotel.hotelId)
+
+        return {
+            ...hotel,
+            rating: rating,
+        }
+    }))
 }
 
 export const getHotelByIdService = async (hotelId: number) => {
