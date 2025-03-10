@@ -1,0 +1,21 @@
+import {RowDataPacket} from "mysql2";
+
+export type Hotel = {
+    hotelId: number,
+    galleryId: number,
+    cityId: number,
+    name: string,
+    location: string,
+    about: string,
+    price: number,
+}
+
+export type HotelDB = RowDataPacket & {
+    hotel_id: number,
+    gallery_id: number,
+    city_id: number,
+    name: string,
+    location: string,
+    about: string,
+    price: number,
+}
