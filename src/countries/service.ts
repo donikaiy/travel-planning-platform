@@ -6,6 +6,10 @@ export const getAllCountries = async () => {
     return await countryRepository.getAllCountries()
 }
 
+export const getCountriesByContinentId = async (continentId: number) => {
+    return await countryRepository.getCountriesByContinentId(continentId)
+}
+
 export const getCountryById = async (countryId: number) => {
     const country = await countryRepository.getCountryById(countryId)
     const cuisine = await getAllCuisinesByCountryId(countryId)
