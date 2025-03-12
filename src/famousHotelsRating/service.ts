@@ -4,5 +4,5 @@ import {calculateAverageRating} from "../utils/calculateAverageRating";
 export const getRatingByHotelId = async (ids: number[]) => {
     const ratings = await famousHotelRatingRepository.getAllHotelRatingsByHotelIdMap(ids)
 
-    return calculateAverageRating({ids, ratings})
+    return calculateAverageRating(ids, ratings)
 }

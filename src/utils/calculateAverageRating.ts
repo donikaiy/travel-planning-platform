@@ -1,4 +1,6 @@
-export const calculateAverageRating = ({ids, ratings}: {ids: number[], ratings: Map<number, { rating: number }[]> }) => {
+import {Rating} from "../types/rating";
+
+export const calculateAverageRating = (ids: number[], ratings: Map<number, Rating[]>)  => {
     const ratingsMap = new Map<number, number>();
 
     ids.forEach(id => {
