@@ -1,15 +1,17 @@
 import restaurantRepository from '../restaurants/repository';
-import {getRatingByRestaurantId} from "../famousRestaurantsRating/service";
+import {getRatingsByRestaurantIdsMap} from "../famousRestaurantsRating/service";
 
 export const getAllRestaurants = async () => {
     const restaurants = await restaurantRepository.getAllRestaurants()
 
-    return await Promise.all((restaurants.map(async (restaurant) => {
-        const rating = await getRatingByRestaurantId(restaurant.restaurantId)
+    const restaurantIds = restaurants.map(restaurant => restaurant.restaurantId)
 
+    const rating = await getRatingsByRestaurantIdsMap(restaurantIds)
+
+    return restaurants.map(restaurant => {
         return {
             ...restaurant,
-            rating: rating
+            rating: rating.get(restaurant.restaurantId)
         }
-    })))
+    })
 }

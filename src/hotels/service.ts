@@ -7,14 +7,16 @@ import {getRatingByHotelId} from "../famousHotelsRating/service";
 export const getAllHotels = async () => {
     const hotels = await hotelRepository.getAllHotels();
 
-    return await Promise.all(hotels.map(async (hotel) => {
-        const rating = await getRatingByHotelId(hotel.hotelId)
+    const hotelIds = hotels.map(hotel => hotel.hotelId)
 
+    const rating = await getRatingByHotelId(hotelIds)
+
+    return hotels.map(hotel => {
         return {
             ...hotel,
-            rating: rating,
+            rating: rating.get(hotel.hotelId)
         }
-    }))
+    })
 }
 
 export const getHotelByIdService = async (hotelId: number) => {
