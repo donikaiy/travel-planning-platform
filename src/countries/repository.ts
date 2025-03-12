@@ -34,7 +34,7 @@ const getCountriesByContinentIdsMap = async (ids: number[]): Promise<Map<number,
         }
 
         if (continentMap.has(country.continentId)) {
-            continentMap.get(country.continentId)?.push(country)
+            continentMap.get(country.continentId)!.push(country)
         } else {
             continentMap.set(country.continentId, [country])
         }

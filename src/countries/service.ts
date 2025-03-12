@@ -6,7 +6,7 @@ export const getAllCountries = async () => {
     return await countryRepository.getAllCountries()
 }
 
-export const getCountriesByContinentIds = async (ids: number[]) => {
+export const getCountriesByContinentIdsMap = async (ids: number[]) => {
     return await countryRepository.getCountriesByContinentIdsMap(ids)
 }
 
