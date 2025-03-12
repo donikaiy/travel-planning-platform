@@ -9,11 +9,9 @@ export const getAllContinents = async () => {
     const countries = await getCountriesByContinentIds(continentIds);
 
     return continents.map((continent) => {
-        const continentCountries = countries.filter(country => country.continentId === continent.continentId);
-
         return {
             ...continent,
-            countries: continentCountries
-        };
+            countries: countries.get(continent.continentId)
+        }
     })
 }
