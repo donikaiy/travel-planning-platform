@@ -1,5 +1,6 @@
 import {Attraction, AttractionDB} from "./domain";
 import {connection} from "../repository";
+import {placeholderSingle, placeholderIds} from "../utils/database";
 
 const getAllAttractions = async (): Promise<Attraction[]> => {
     const [results] = await connection.query<AttractionDB[]>('SELECT * FROM attractions')
@@ -22,7 +23,7 @@ const getAllAttractions = async (): Promise<Attraction[]> => {
 }
 
 const getAttractionById = async (attractionId: number): Promise<Attraction[]> => {
-    const [result] = await connection.query<AttractionDB[]>('SELECT * FROM attractions WHERE attraction_id = ?', [attractionId])
+    const [result] = await connection.execute<AttractionDB[]>(`SELECT * FROM attractions WHERE attraction_id = (${placeholderSingle})`, [attractionId])
     return result.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,
@@ -42,7 +43,7 @@ const getAttractionById = async (attractionId: number): Promise<Attraction[]> =>
 }
 
 const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
-    const [result] = await connection.query<AttractionDB[]>(`SELECT * FROM attractions WHERE attraction_id IN (${ids.join(',')})`)
+    const [result] = await connection.execute<AttractionDB[]>(`SELECT * FROM attractions WHERE attraction_id IN (${placeholderIds(ids)})`)
     return result.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,

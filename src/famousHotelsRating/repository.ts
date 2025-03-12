@@ -1,8 +1,9 @@
 import {FamousHotelRating, FamousHotelRatingDB} from "./domain";
 import {connection} from "../repository";
+import {placeholderIds} from "../utils/database";
 
 const getAllHotelRatingsByHotelIdMap = async (ids: number[]): Promise<Map<number, FamousHotelRating[]>> => {
-    const [results] = await connection.query<FamousHotelRatingDB[]>(`SELECT * FROM famous_hotels_rating WHERE hotel_id IN (${ids.join(',')})`);
+    const [results] = await connection.execute<FamousHotelRatingDB[]>(`SELECT * FROM famous_hotels_rating WHERE hotel_id IN (${placeholderIds(ids)})`);
 
     const ratingsMap = new Map<number, FamousHotelRating[]>();
 

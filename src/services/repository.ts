@@ -1,8 +1,9 @@
 import {connection} from "../repository";
 import {Service, ServiceDB} from "./domain";
+import {placeholderIds} from "../utils/database";
 
 const getServicesByIds = async (ids: number[]): Promise<Service[]> => {
-    const [results] = await connection.query<ServiceDB[]>(`SELECT * FROM services WHERE service_id IN (${ids.join(',')})`);
+    const [results] = await connection.execute<ServiceDB[]>(`SELECT * FROM services WHERE service_id IN (${placeholderIds(ids)})`);
     return results.map(serviceDB => {
         const service: Service = {
             serviceId: serviceDB.service_id,

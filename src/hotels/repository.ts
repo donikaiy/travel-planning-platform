@@ -1,5 +1,6 @@
 import {connection} from "../repository";
 import {Hotel, HotelDB} from "./domain";
+import {placeholderSingle} from "../utils/database";
 
 const getAllHotels = async (): Promise<Hotel[]> => {
     const [results] = await connection.query<HotelDB[]>('SELECT * FROM hotels');
@@ -19,7 +20,7 @@ const getAllHotels = async (): Promise<Hotel[]> => {
 }
 
 const getHotelById = async (hotelId: number): Promise<Hotel[]> => {
-    const [result] = await connection.query<HotelDB[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
+    const [result] = await connection.execute<HotelDB[]>(`SELECT * FROM hotels WHERE hotel_id = (${placeholderSingle})`, [hotelId]);
     return result.map(hotelDB => {
         const hotel: Hotel = {
             hotelId: hotelDB.hotel_id,
