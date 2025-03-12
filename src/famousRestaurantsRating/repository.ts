@@ -1,17 +1,27 @@
 import {connection} from "../repository";
 import {FamousRestaurantRating, FamousRestaurantRatingDB} from "./domain";
 
-const getAllRestaurantRatingsByRestaurantId = async (restaurantId: number): Promise<FamousRestaurantRating[]> => {
-    const [results] = await connection.query<FamousRestaurantRatingDB[]>(`SELECT * FROM famous_restaurants_rating WHERE restaurant_id = ?`, [restaurantId]);
-    return results.map(ratingDB => {
+const getAllRestaurantRatingsByRestaurantIdsMap = async (ids: number[]): Promise<Map<number, FamousRestaurantRating[]>> => {
+    const [results] = await connection.query<FamousRestaurantRatingDB[]>(`SELECT *
+                                                                          FROM famous_restaurants_rating                                                              WHERE restaurant_id IN (${ids.join(',')})`);
+
+    const ratingsMap = new Map<number, FamousRestaurantRating[]>();
+
+    results.forEach(ratingDB => {
         const rating: FamousRestaurantRating = {
             ratingId: ratingDB.rating_id,
             restaurantId: ratingDB.restaurant_id,
             rating: ratingDB.rating,
         }
 
-        return rating
+        if(ratingsMap.has(rating.restaurantId)) {
+            ratingsMap.get(rating.restaurantId)!.push(rating)
+        } else {
+            ratingsMap.set(rating.restaurantId, [rating])
+        }
     })
+
+    return ratingsMap
 }
 
-export default {getAllRestaurantRatingsByRestaurantId}
+export default {getAllRestaurantRatingsByRestaurantIdsMap}

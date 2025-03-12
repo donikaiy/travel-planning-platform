@@ -1,16 +1,8 @@
 import famousHotelRatingRepository from '../famousHotelsRating/repository';
+import {calculateAverageRating} from "../utils/calculateAverageRating";
 
-export const getRatingByHotelId = async (hotelId: number) => {
-    const ratings = await famousHotelRatingRepository.getAllHotelRatingsByHotelId(hotelId)
+export const getRatingByHotelId = async (ids: number[]) => {
+    const ratings = await famousHotelRatingRepository.getAllHotelRatingsByHotelIdMap(ids)
 
-    if (ratings.length === 0) {
-        return 0;
-    }
-
-    const totalRating = ratings.map(rating => rating.rating).reduce(
-        (sum, rating) => sum + rating,
-        0
-    )
-
-    return totalRating / ratings.length;
+    return calculateAverageRating(ids, ratings)
 }
