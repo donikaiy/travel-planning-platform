@@ -19,11 +19,6 @@ const getAllCountries = async (): Promise<Country[]> => {
 }
 
 const getCountriesByContinentIdsMap = async (ids: number[]): Promise<Map<number, Country[]>> => {
-    if (ids.length === 0) {
-        console.error('No country IDs provided.');
-        return new Map();
-    }
-
     const [results] = await connection.execute<CountryDB[]>(`SELECT *
                                                            FROM countries
                                                            WHERE continent_id IN (${placeholderIds(ids)})`, ids)

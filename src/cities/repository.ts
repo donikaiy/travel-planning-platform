@@ -46,11 +46,6 @@ const createCity = async (countryId: number, name: string): Promise<City> => {
 }
 
 const getCitiesByIds = async(ids: number[]): Promise<City[]> => {
-    if (ids.length === 0) {
-        console.error('No city IDs provided.');
-        return [];
-    }
-
     const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE cities.city_id IN (${placeholderIds(ids)})`, ids)
     return results.map(cityDB => {
         const city: City = {

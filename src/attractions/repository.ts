@@ -43,11 +43,6 @@ const getAttractionById = async (attractionId: number): Promise<Attraction[]> =>
 }
 
 const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
-    if (ids.length === 0) {
-        console.error('No attraction IDs provided.');
-        return [];
-    }
-
     const [result] = await connection.execute<AttractionDB[]>(`SELECT * FROM attractions WHERE attraction_id IN (${placeholderIds(ids)})`, ids)
     return result.map(attractionDB => {
         const attraction: Attraction = {
