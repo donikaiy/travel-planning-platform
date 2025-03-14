@@ -26,11 +26,11 @@ export const getHotelByIdService = async (hotelId: number) => {
         throw new Error(`Hotel with id ${hotelId} not found`);
     }
 
-    const services = await getAllServicesByHotelId(hotelId)
-
-    const rooms = await getAllRoomsByHotelId(hotelId)
-
-    const nearbyAttractions = await getAllNearbyAttractionsByHotelId(hotelId)
+    const [services, rooms, nearbyAttractions] = await Promise.all([
+        getAllServicesByHotelId(hotelId),
+        getAllRoomsByHotelId(hotelId),
+        getAllNearbyAttractionsByHotelId(hotelId)
+    ])
 
     return {
         hotel: hotelById[0],
