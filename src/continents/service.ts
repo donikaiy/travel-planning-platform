@@ -11,7 +11,7 @@ export const getAllContinents = async () => {
     return continents.map((continent) => {
         return {
             ...continent,
-            countries: countriesMap.get(continent.continentId)
+            countries: countriesMap.get(continent.continentId) || []
         }
     })
 }

@@ -2,8 +2,14 @@ import {connection} from "../repository";
 import {FamousRestaurantRating, FamousRestaurantRatingDB} from "./domain";
 
 const getAllRestaurantRatingsByRestaurantIdsMap = async (ids: number[]): Promise<Map<number, FamousRestaurantRating[]>> => {
-    const [results] = await connection.query<FamousRestaurantRatingDB[]>(`SELECT *
-                                                                          FROM famous_restaurants_rating                                                              WHERE restaurant_id IN (${ids.join(',')})`);
+    if (ids.length === 0) {
+        console.error('No country IDs provided.');
+        return new Map();
+    }
+
+    const [results] = await connection.execute<FamousRestaurantRatingDB[]>(`SELECT *
+                                                                          FROM famous_restaurants_rating
+                                                                          WHERE restaurant_id IN (${ids.join(',')})`);
 
     const ratingsMap = new Map<number, FamousRestaurantRating[]>();
 
@@ -14,7 +20,7 @@ const getAllRestaurantRatingsByRestaurantIdsMap = async (ids: number[]): Promise
             rating: ratingDB.rating,
         }
 
-        if(ratingsMap.has(rating.restaurantId)) {
+        if (ratingsMap.has(rating.restaurantId)) {
             ratingsMap.get(rating.restaurantId)!.push(rating)
         } else {
             ratingsMap.set(rating.restaurantId, [rating])

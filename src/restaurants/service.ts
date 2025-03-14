@@ -11,7 +11,7 @@ export const getAllRestaurants = async () => {
     return restaurants.map(restaurant => {
         return {
             ...restaurant,
-            rating: rating.get(restaurant.restaurantId)
+            rating: rating.get(restaurant.restaurantId) || []
         }
     })
 }

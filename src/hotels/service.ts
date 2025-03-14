@@ -14,7 +14,7 @@ export const getAllHotels = async () => {
     return hotels.map(hotel => {
         return {
             ...hotel,
-            rating: rating.get(hotel.hotelId)
+            rating: rating.get(hotel.hotelId) || []
         }
     })
 }
