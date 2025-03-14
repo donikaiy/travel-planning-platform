@@ -1,6 +1,7 @@
 import {connection} from "../repository";
 import {Country, CountryDB} from "./domain";
 import {ResultSetHeader} from "mysql2";
+import {placeholderIds} from "../utils/database";
 
 const getAllCountries = async (): Promise<Country[]> => {
     const [results] = await connection.query<CountryDB[]>('SELECT * FROM countries')
@@ -18,9 +19,9 @@ const getAllCountries = async (): Promise<Country[]> => {
 }
 
 const getCountriesByContinentIdsMap = async (ids: number[]): Promise<Map<number, Country[]>> => {
-    const [results] = await connection.query<CountryDB[]>(`SELECT *
+    const [results] = await connection.execute<CountryDB[]>(`SELECT *
                                                            FROM countries
-                                                           WHERE continent_id IN (${ids.join(',')})`)
+                                                           WHERE continent_id IN (${placeholderIds(ids)})`, ids)
 
     const continentMap = new Map<number, Country[]>();
 
@@ -44,7 +45,7 @@ const getCountriesByContinentIdsMap = async (ids: number[]): Promise<Map<number,
 }
 
 const getCountryById = async (countryId: number): Promise<Country[]> => {
-    const [result] = await connection.query<CountryDB[]>('SELECT * FROM countries WHERE country_id = ?', [countryId])
+    const [result] = await connection.execute<CountryDB[]>('SELECT * FROM countries WHERE country_id = ?', [countryId])
     return result.map(countryDB => {
         const country: Country = {
             countryId: countryDB.country_id,
@@ -59,13 +60,13 @@ const getCountryById = async (countryId: number): Promise<Country[]> => {
 }
 
 const checkCountryExists = async (name: string): Promise<any> => {
-    const [result] = await connection.query('SELECT EXISTS(SELECT * FROM countries WHERE name = ?) AS countryExists', [name])
+    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM countries WHERE name = ?) AS countryExists', [name])
 
     return result
 }
 
 const createCountry = async (continentId: number, name: string, galleryId: number, history: string): Promise<Country> => {
-    const [result] = await connection.query<ResultSetHeader>('INSERT INTO countries (continent_id, name, gallery_id, history) VALUES (?, ?, ?, ?)', [continentId, name, galleryId, history])
+    const [result] = await connection.execute<ResultSetHeader>('INSERT INTO countries (continent_id, name, gallery_id, history) VALUES (?, ?, ?, ?)', [continentId, name, galleryId, history])
 
     return {
         countryId: result.insertId,

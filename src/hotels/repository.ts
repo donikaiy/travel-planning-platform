@@ -19,7 +19,7 @@ const getAllHotels = async (): Promise<Hotel[]> => {
 }
 
 const getHotelById = async (hotelId: number): Promise<Hotel[]> => {
-    const [result] = await connection.query<HotelDB[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
+    const [result] = await connection.execute<HotelDB[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
     return result.map(hotelDB => {
         const hotel: Hotel = {
             hotelId: hotelDB.hotel_id,

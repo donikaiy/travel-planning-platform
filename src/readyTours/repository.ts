@@ -19,7 +19,7 @@ const getAllReadyTours = async (): Promise<ReadyTour[]> => {
 }
 
 const getReadyTourById = async (readyTourId: number): Promise<ReadyTour[]> => {
-    const [result] = await connection.query<ReadyTourDB[]>('SELECT * FROM ready_tours WHERE ready_tour_id = ?', [readyTourId])
+    const [result] = await connection.execute<ReadyTourDB[]>('SELECT * FROM ready_tours WHERE ready_tour_id = ?', [readyTourId])
     return result.map(readyTourDB => {
         const readyTour: ReadyTour = {
             readyTourId: readyTourDB.ready_tour_id,
