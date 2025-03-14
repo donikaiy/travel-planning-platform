@@ -1,13 +1,13 @@
 import attractionRepository from '../attractions/repository';
 
 export const getAllAttractions = async () => {
-    return await attractionRepository.getAllAttractions()
+    return attractionRepository.getAllAttractions()
 }
 
 export const getAttractionById = async (attractionId: number) => {
-    return await attractionRepository.getAttractionById(attractionId)
+    return attractionRepository.getAttractionById(attractionId)
 }
 
 export const getAttractionsByIds = async (ids: number[]) => {
-    return await attractionRepository.getAttractionsByIds(ids)
+    return attractionRepository.getAttractionsByIds(ids)
 }
