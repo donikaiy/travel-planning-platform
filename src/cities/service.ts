@@ -16,6 +16,14 @@ export const createCity = async (countryId: number, name: string, imageUrl: stri
     return cityRepository.createCity(countryId, name, imageUrl)
 }
 
+export const getAllCitiesByCountryId = async (countryId: number) => {
+    const countryCities = await cityRepository.getAllCitiesByCountryId(countryId)
+
+    const cityIds: number[] = countryCities.map(countryCity => countryCity.cityId)
+
+    return getCitiesByIds(cityIds)
+}
+
 export const getCitiesByIds = async (ids: number[]) => {
     return cityRepository.getCitiesByIds(ids)
 }

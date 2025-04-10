@@ -38,7 +38,7 @@ const checkCityExists = async (name: string): Promise<any> => {
 }
 
 const createCity = async (countryId: number, name: string, imageUrl: string): Promise<City> => {
-    const [result] = await connection.execute<ResultSetHeader>('INSERT INTO cities (country_id, name) VALUES (?, ?)', [countryId, name, imageUrl])
+    const [result] = await connection.execute<ResultSetHeader>('INSERT INTO cities (country_id, name, image_url) VALUES (?, ?, ?)', [countryId, name, imageUrl])
 
     return {
         cityId: result.insertId,
@@ -50,6 +50,20 @@ const createCity = async (countryId: number, name: string, imageUrl: string): Pr
 
 const getCitiesByIds = async(ids: number[]): Promise<City[]> => {
     const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE cities.city_id IN (${placeholderIds(ids)})`, ids)
+    return results.map(cityDB => {
+        const city: City = {
+            cityId: cityDB.city_id,
+            countryId: cityDB.country_id,
+            name: cityDB.name,
+            imageUrl: cityDB.image_url,
+        }
+
+        return city
+    })
+}
+
+const getAllCitiesByCountryId = async (countryId: number): Promise<City[]> => {
+    const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE country_id = ?`, [countryId]);
     return results.map(cityDB => {
         const city: City = {
             cityId: cityDB.city_id,
@@ -87,4 +101,4 @@ const getCitiesByCountryIdsMap = async (ids: number[]): Promise<Map<number, City
     return countryMap
 }
 
-export default {getAllCities, getCityById, checkCityExists, createCity, getCitiesByIds, getCitiesByCountryIdsMap}
+export default {getAllCities, getCityById, checkCityExists, createCity, getCitiesByIds, getCitiesByCountryIdsMap, getAllCitiesByCountryId}
