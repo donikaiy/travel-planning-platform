@@ -12,10 +12,14 @@ export const checkCityExists = async (name: string) => {
     return cityRepository.checkCityExists(name)
 }
 
-export const createCity = async (countryId: number, name: string) => {
-    return cityRepository.createCity(countryId, name)
+export const createCity = async (countryId: number, name: string, imageUrl: string) => {
+    return cityRepository.createCity(countryId, name, imageUrl)
 }
 
 export const getCitiesByIds = async (ids: number[]) => {
     return cityRepository.getCitiesByIds(ids)
+}
+
+export const getCitiesByCountryIdsMap = async (ids: number[]) => {
+    return cityRepository.getCitiesByCountryIdsMap(ids)
 }
