@@ -1,11 +1,13 @@
 import express, {Request, Response} from "express";
-import {checkCountryExists, createCountry, getAllCountries, getCountryById} from "./service";
+import {checkCountryExists, createCountry, getAllCountries, getAllCountriesWithCities, getCountryById} from "./service";
 
 export const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
+    const include_cities = req.query.include_cities === 'true';
+
     try {
-        const countries = await getAllCountries();
+        const countries = include_cities ? await getAllCountriesWithCities() : await getAllCountries();
         res.json(countries)
     } catch (err: any) {
         res.status(500).json({error: err.message})

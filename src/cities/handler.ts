@@ -29,7 +29,7 @@ router.post('/', async (req: Request, res: Response) => {
             return
         }
 
-        const newCity = await createCity(req.body.countryId, req.body.name)
+        const newCity = await createCity(req.body.countryId, req.body.name, req.body.imageUrl)
         res.status(201).json({message: "City created successfully!", country: newCity})
     } catch (err: any) {
         res.status(500).json({error: err.message})

@@ -1,9 +1,24 @@
 import countryRepository from '../countries/repository';
 import {getAllCuisinesByCountryId} from "../cuisine/service";
-import {getAllCitiesByCountryId} from "../countryCities/service";
+import {getAllCitiesByCountryId, getCitiesByCountryIdsMap} from "../cities/service";
 
 export const getAllCountries = async () => {
     return countryRepository.getAllCountries()
+}
+
+export const getAllCountriesWithCities = async () => {
+    const countries = await countryRepository.getAllCountries()
+
+    const countryIds = countries.map(country => country.countryId)
+
+    const citiesMap = await getCitiesByCountryIdsMap(countryIds);
+
+    return countries.map(country => {
+        return {
+            ...country,
+            cities: citiesMap.get(country.countryId) || []
+        }
+    })
 }
 
 export const getCountriesByContinentIdsMap = async (ids: number[]) => {
