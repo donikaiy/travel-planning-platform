@@ -1,6 +1,7 @@
 import countryRepository from '../countries/repository';
 import {getAllCuisinesByCountryId} from "../cuisine/service";
 import {getAllCitiesByCountryId, getCitiesByCountryIdsMap} from "../cities/service";
+import {getGalleryImagesByGalleryId} from "../gallery/service";
 
 export const getAllCountries = async () => {
     return countryRepository.getAllCountries()
@@ -32,7 +33,14 @@ export const getCountryById = async (countryId: number) => {
         getAllCitiesByCountryId(countryId)
     ])
 
-    return {country: country, cuisine: cuisine, cities: cities}
+    const galleryImages = await getGalleryImagesByGalleryId(country.galleryId);
+
+    return {
+        ...country,
+        gallery: galleryImages,
+        cuisine: cuisine,
+        cities: cities,
+    };
 }
 
 export const checkCountryExists = async (name: string) => {

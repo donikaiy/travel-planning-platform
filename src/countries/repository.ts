@@ -20,8 +20,8 @@ const getAllCountries = async (): Promise<Country[]> => {
 
 const getCountriesByContinentIdsMap = async (ids: number[]): Promise<Map<number, Country[]>> => {
     const [results] = await connection.execute<CountryDB[]>(`SELECT *
-                                                           FROM countries
-                                                           WHERE continent_id IN (${placeholderIds(ids)})`, ids)
+                                                             FROM countries
+                                                             WHERE continent_id IN (${placeholderIds(ids)})`, ids)
 
     const continentMap = new Map<number, Country[]>();
 
@@ -44,19 +44,22 @@ const getCountriesByContinentIdsMap = async (ids: number[]): Promise<Map<number,
     return continentMap
 }
 
-const getCountryById = async (countryId: number): Promise<Country[]> => {
+const getCountryById = async (countryId: number): Promise<Country> => {
     const [result] = await connection.execute<CountryDB[]>('SELECT * FROM countries WHERE country_id = ?', [countryId])
-    return result.map(countryDB => {
-        const country: Country = {
-            countryId: countryDB.country_id,
-            continentId: countryDB.continent_id,
-            galleryId: countryDB.gallery_id,
-            name: countryDB.name,
-            history: countryDB.history,
-        }
 
-        return country
-    })
+    if (result.length === 0) {
+        throw new Error('Country not found')
+    }
+
+    const countryDB = result[0]
+
+    return {
+        countryId: countryDB.country_id,
+        continentId: countryDB.continent_id,
+        galleryId: countryDB.gallery_id,
+        name: countryDB.name,
+        history: countryDB.history,
+    }
 }
 
 const checkCountryExists = async (name: string): Promise<any> => {
