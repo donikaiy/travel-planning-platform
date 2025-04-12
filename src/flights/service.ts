@@ -1,10 +1,10 @@
-import flightRepository, {getUniqueCityIdsFromFlights} from "../flights/repository";
+import flightRepository  from "../flights/repository";
 import {getCitiesByIds} from "../cities/service";
 
 export const getAllFlights = async () => {
     const [allFlights, cityIds] = await Promise.all([
         flightRepository.getAllFlights(),
-        getUniqueCityIdsFromFlights()
+        flightRepository.getUniqueCityIdsFromFlights()
     ])
 
     const cities = await getCitiesByIds(cityIds)
@@ -15,7 +15,7 @@ export const getAllFlights = async () => {
 
     return allFlights.map(flight => ({
         ...flight,
-        originCityId: cityMap.get(flight.originCityId),
-        destinationCityId: cityMap.get(flight.destinationCityId)
+        originCity: cityMap.get(flight.originCityId),
+        destinationCity: cityMap.get(flight.destinationCityId)
     }))
 }
