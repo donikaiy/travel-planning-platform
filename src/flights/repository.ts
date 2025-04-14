@@ -23,7 +23,7 @@ const getAllFlights = async (): Promise<Flight[]> => {
 
 const getUniqueCityIdsFromFlights = async () => {
     const [results] = await connection.query<CityDB[]>(
-        'SELECT DISTINCT origin_city_id AS city_id FROM flights UNION SELECT DISTINCT destination_city_id AS city_id FROM flights'
+        'SELECT origin_city_id AS city_id FROM flights UNION SELECT destination_city_id AS city_id FROM flights'
     );
 
     return results.map(result => result.city_id);
