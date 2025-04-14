@@ -27,7 +27,7 @@ export const getCountriesByContinentIdsMap = async (ids: number[]) => {
 }
 
 export const getCountryById = async (countryId: number) => {
-    const [country, cuisine, cities] = await Promise.all([
+    const [country, cuisines, cities] = await Promise.all([
         countryRepository.getCountryById(countryId),
         getAllCuisinesByCountryId(countryId),
         getAllCitiesByCountryId(countryId)
@@ -38,7 +38,7 @@ export const getCountryById = async (countryId: number) => {
     return {
         ...country,
         gallery: galleryImages,
-        cuisine: cuisine,
+        cuisines: cuisines,
         cities: cities,
     };
 }
