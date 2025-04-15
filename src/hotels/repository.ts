@@ -12,6 +12,7 @@ const getAllHotels = async (): Promise<Hotel[]> => {
             location: hotelDB.location,
             about: hotelDB.about,
             price: hotelDB.price,
+            preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
         }
 
         return hotel
@@ -29,6 +30,7 @@ const getHotelById = async (hotelId: number): Promise<Hotel[]> => {
             location: hotelDB.location,
             about: hotelDB.about,
             price: hotelDB.price,
+            preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
         }
 
         return hotel

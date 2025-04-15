@@ -8,6 +8,7 @@ export type Hotel = {
     location: string,
     about: string,
     price: number,
+    preferredGalleryEntryId: number
 }
 
 export type HotelDB = RowDataPacket & {
@@ -18,4 +19,5 @@ export type HotelDB = RowDataPacket & {
     location: string,
     about: string,
     price: number,
+    preferred_gallery_entry_id: number
 }
