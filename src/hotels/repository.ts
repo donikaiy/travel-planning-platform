@@ -19,22 +19,25 @@ const getAllHotels = async (): Promise<Hotel[]> => {
     });
 }
 
-const getHotelById = async (hotelId: number): Promise<Hotel[]> => {
+const getHotelById = async (hotelId: number): Promise<Hotel> => {
     const [result] = await connection.execute<HotelDB[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
-    return result.map(hotelDB => {
-        const hotel: Hotel = {
-            hotelId: hotelDB.hotel_id,
-            galleryId: hotelDB.gallery_id,
-            cityId: hotelDB.city_id,
-            name: hotelDB.name,
-            location: hotelDB.location,
-            about: hotelDB.about,
-            price: hotelDB.price,
-            preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
-        }
 
-        return hotel
-    })
+    if (result.length === 0) {
+        throw new Error('Hotel not found')
+    }
+
+    const hotelDB = result[0]
+
+    return {
+        hotelId: hotelDB.hotel_id,
+        galleryId: hotelDB.gallery_id,
+        cityId: hotelDB.city_id,
+        name: hotelDB.name,
+        location: hotelDB.location,
+        about: hotelDB.about,
+        price: hotelDB.price,
+        preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
+    }
 }
 
 export default {getAllHotels, getHotelById}
