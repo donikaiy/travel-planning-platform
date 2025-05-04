@@ -1,9 +1,8 @@
 import famousReadyTourRatingRepository from '../famousReadyToursRating/repository';
+import {calculateAverageRating} from "../utils/calculateAverageRating";
 
-export const getReadyToursRatingByReadyTourId = async (readyTourId: number) => {
-    const rating = await famousReadyTourRatingRepository.getAllReadyToursRatingByReadyTourId(readyTourId)
+export const getRatingsByReadyToursIdsMap = async (ids: number[]) => {
+    const ratings = await famousReadyTourRatingRepository.getAllReadyToursRatingsByReadyTourIdsMap(ids);
 
-    const ratingReadyTour = rating.map(famousReadyTourRating => famousReadyTourRating.rating).reduce((sum, rating) => sum + rating, 0)
-
-    return ratingReadyTour / rating.length
+    return calculateAverageRating(ids, ratings)
 }
