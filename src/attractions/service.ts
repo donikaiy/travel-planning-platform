@@ -11,3 +11,7 @@ export const getAttractionById = async (attractionId: number) => {
 export const getAttractionsByIds = async (ids: number[]) => {
     return attractionRepository.getAttractionsByIds(ids)
 }
+
+export const getAttractionsByCityId = async (cityId: number) => {
+    return attractionRepository.getAttractionsBiCityId(cityId)
+}
