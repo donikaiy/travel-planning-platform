@@ -32,7 +32,7 @@ export const getAllHotels = async () => {
     })
 }
 
-export const getHotelByIdService = async (hotelId: number) => {
+export const getHotelById = async (hotelId: number) => {
     const [hotel, services, rooms, nearbyAttractions] = await Promise.all([
         hotelRepository.getHotelById(hotelId),
         getAllServicesByHotelId(hotelId),
