@@ -67,7 +67,7 @@ const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
     })
 }
 
-const getAttractionsBiCityId = async (cityId: number): Promise<Attraction[]> => {
+const getAttractionsByCityId = async (cityId: number): Promise<Attraction[]> => {
     const [results] = await connection.execute<AttractionDB[]>(`SELECT * FROM attractions WHERE city_id = ?`, [cityId])
     return results.map(attractionDB => {
         const attraction: Attraction = {
@@ -87,4 +87,4 @@ const getAttractionsBiCityId = async (cityId: number): Promise<Attraction[]> => 
     })
 }
 
-export default {getAllAttractions, getAttractionById, getAttractionsByIds, getAttractionsBiCityId}
+export default {getAllAttractions, getAttractionById, getAttractionsByIds, getAttractionsByCityId}
