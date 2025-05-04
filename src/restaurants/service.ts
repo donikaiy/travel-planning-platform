@@ -15,3 +15,7 @@ export const getAllRestaurants = async () => {
         }
     })
 }
+
+export const getRestaurantsByCityId = async (cityId: number) => {
+    return restaurantRepository.getRestaurantsByCityId(cityId)
+}

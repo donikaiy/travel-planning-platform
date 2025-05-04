@@ -17,4 +17,20 @@ const getAllRestaurants = async (): Promise<Restaurant[]> => {
     })
 }
 
-export default {getAllRestaurants}
+const getRestaurantsByCityId = async (cityId: number): Promise<Restaurant[]> => {
+    const [results] = await connection.execute<RestaurantDB[]>('SELECT * FROM restaurants WHERE city_id = ?', [cityId]);
+    return results.map(restaurantDB => {
+        const restaurant: Restaurant = {
+            restaurantId: restaurantDB.restaurant_id,
+            cityId: restaurantDB.city_id,
+            name: restaurantDB.name,
+            location: restaurantDB.location,
+            imageUrl: restaurantDB.image_url,
+            priceSymbols: restaurantDB.price_symbols,
+        }
+
+        return restaurant
+    })
+}
+
+export default {getAllRestaurants, getRestaurantsByCityId}
