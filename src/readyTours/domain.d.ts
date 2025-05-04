@@ -3,7 +3,7 @@ import {RowDataPacket} from "mysql2";
 export type ReadyTour = {
     readyTourId: number,
     cityId: number,
-    galleryId: number,
+    imageUrl: string,
     name: string,
     daysNights: string,
     description: string,
@@ -13,7 +13,7 @@ export type ReadyTour = {
 export type ReadyTourDB = RowDataPacket & {
     ready_tour_id: number,
     city_id: number,
-    gallery_id: number,
+    image_url: string,
     name: string,
     days_nights: string,
     description: string,

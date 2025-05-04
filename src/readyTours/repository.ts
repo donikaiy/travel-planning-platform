@@ -7,7 +7,7 @@ const getAllReadyTours = async (): Promise<ReadyTour[]> => {
         const readyTour: ReadyTour = {
             readyTourId: readyTourDB.ready_tour_id,
             cityId: readyTourDB.city_id,
-            galleryId: readyTourDB.gallery_id,
+            imageUrl: readyTourDB.image_url,
             name: readyTourDB.name,
             daysNights: readyTourDB.days_nights,
             description: readyTourDB.description,
@@ -18,21 +18,24 @@ const getAllReadyTours = async (): Promise<ReadyTour[]> => {
     })
 }
 
-const getReadyTourById = async (readyTourId: number): Promise<ReadyTour[]> => {
+const getReadyTourById = async (readyTourId: number): Promise<ReadyTour> => {
     const [result] = await connection.execute<ReadyTourDB[]>('SELECT * FROM ready_tours WHERE ready_tour_id = ?', [readyTourId])
-    return result.map(readyTourDB => {
-        const readyTour: ReadyTour = {
-            readyTourId: readyTourDB.ready_tour_id,
-            cityId: readyTourDB.city_id,
-            galleryId: readyTourDB.gallery_id,
-            name: readyTourDB.name,
-            daysNights: readyTourDB.days_nights,
-            description: readyTourDB.description,
-            highlights: readyTourDB.highlights,
-        }
 
-        return readyTour
-    })
+    if (result.length === 0) {
+        throw new Error('ReadyTour not found')
+    }
+
+    const readyTourDB = result[0]
+
+    return {
+        readyTourId: readyTourDB.ready_tour_id,
+        cityId: readyTourDB.city_id,
+        imageUrl: readyTourDB.image_url,
+        name: readyTourDB.name,
+        daysNights: readyTourDB.days_nights,
+        description: readyTourDB.description,
+        highlights: readyTourDB.highlights,
+    }
 }
 
 export default {getAllReadyTours, getReadyTourById}
