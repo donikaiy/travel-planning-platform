@@ -4,7 +4,7 @@ import {getAllRoomsByHotelId} from "../rooms/service";
 import {getAllNearbyAttractionsByHotelId} from "../nearby_attractions/service";
 import {Gallery} from "../gallery/gallery";
 import {getAllGalleryImagesByGalleryEntries, getGalleryImagesByGalleryId} from "../gallery/service";
-import {getAllHotelRatingsByHotelIdMap} from "../famousHotelsRating/service";
+import {getAllHotelRatingsByHotelIdMap} from "../hotelsRating/service";
 
 export const getAllHotels = async () => {
     const hotels = await hotelRepository.getAllHotels();
