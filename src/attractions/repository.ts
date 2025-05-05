@@ -5,10 +5,6 @@ import {placeholderIds} from "../utils/database";
 const getAllAttractions = async (): Promise<Attraction[]> => {
     const [results] = await connection.query<AttractionDB[]>('SELECT * FROM attractions')
 
-    if (results.length == 0) {
-        return [];
-    }
-
     return results.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,
@@ -55,10 +51,6 @@ const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
                                                                FROM attractions
                                                                WHERE attraction_id IN (${placeholderIds(ids)})`, ids)
 
-    if (results.length == 0) {
-        return [];
-    }
-
     return results.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,
@@ -79,10 +71,6 @@ const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
 
 const getAttractionsByCityId = async (cityId: number): Promise<Attraction[]> => {
     const [results] = await connection.execute<AttractionDB[]>(`SELECT * FROM attractions WHERE city_id = ?`, [cityId])
-
-    if (results.length == 0) {
-        return [];
-    }
 
     return results.map(attractionDB => {
         const attraction: Attraction = {

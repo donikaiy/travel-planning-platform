@@ -4,10 +4,6 @@ import {connection} from "../repository";
 const getAllReadyTours = async (): Promise<ReadyTour[]> => {
     const [results] = await connection.query<ReadyTourDB[]>('SELECT * FROM ready_tours')
 
-    if (results.length == 0) {
-        return [];
-    }
-
     return results.map(readyTourDB => {
         const readyTour: ReadyTour = {
             readyTourId: readyTourDB.ready_tour_id,

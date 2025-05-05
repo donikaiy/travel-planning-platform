@@ -4,10 +4,6 @@ import {connection} from "../repository";
 const getAllContinents = async (): Promise<Continent[]> => {
     const [results] = await connection.query<ContinentDB[]>(`SELECT * FROM continents`);
 
-    if (results.length === 0) {
-        return [];
-    }
-
     return results.map(continentDB => {
         const continent: Continent = {
             continentId: continentDB.continent_id,

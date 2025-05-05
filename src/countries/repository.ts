@@ -6,10 +6,6 @@ import {placeholderIds} from "../utils/database";
 const getAllCountries = async (): Promise<Country[]> => {
     const [results] = await connection.query<CountryDB[]>('SELECT * FROM countries')
 
-    if (results.length == 0) {
-        return [];
-    }
-
     return results.map(countryDB => {
         const country: Country = {
             countryId: countryDB.country_id,
