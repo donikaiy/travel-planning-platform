@@ -1,5 +1,5 @@
 import tourProgramRepository from '../tourPrograms/repository';
 
-export const getAllTourProgramsByReadyTourId = async (readyTourId: number) => {
-    return tourProgramRepository.getAllTourProgramsByReadyTourId(readyTourId)
+export const getAllTourProgramsByTourId = async (tourId: number) => {
+    return tourProgramRepository.getAllTourProgramsByTourId(tourId)
 }
