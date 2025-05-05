@@ -1,13 +1,13 @@
 import {connection} from "../repository";
-import {NearbyAttraction, NearbyAttractionDB} from "./domain";
+import {NearbyAttraction, NearbyAttractionDb} from "./domain";
 
 const getAllAttractionsByHotelId = async (hotelId: number): Promise<NearbyAttraction[]> => {
-    const [results] = await connection.execute<NearbyAttractionDB[]>(`SELECT * FROM nearby_attractions WHERE hotel_id = ?`, [hotelId]);
+    const [results] = await connection.execute<NearbyAttractionDb[]>(`SELECT * FROM nearby_attractions WHERE hotel_id = ?`, [hotelId]);
 
-    return results.map(nearbyAttractionDB => {
+    return results.map(nearbyAttractionDb => {
         const nearbyAttraction: NearbyAttraction = {
-            attractionId: nearbyAttractionDB.attraction_id,
-            hotelId: nearbyAttractionDB.hotel_id,
+            attractionId: nearbyAttractionDb.attraction_id,
+            hotelId: nearbyAttractionDb.hotel_id,
         }
 
         return nearbyAttraction

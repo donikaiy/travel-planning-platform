@@ -1,17 +1,17 @@
-import {Restaurant, RestaurantDB} from "./domain";
+import {Restaurant, RestaurantDb} from "./domain";
 import {connection} from "../repository";
 
 const getAllRestaurants = async (): Promise<Restaurant[]> => {
-    const [results] = await connection.query<RestaurantDB[]>('SELECT * FROM restaurants');
+    const [results] = await connection.query<RestaurantDb[]>('SELECT * FROM restaurants');
 
-    return results.map(restaurantDB => {
+    return results.map(restaurantDb => {
         const restaurant: Restaurant = {
-            restaurantId: restaurantDB.restaurant_id,
-            cityId: restaurantDB.city_id,
-            name: restaurantDB.name,
-            location: restaurantDB.location,
-            imageUrl: restaurantDB.image_url,
-            priceSymbols: restaurantDB.price_symbols,
+            restaurantId: restaurantDb.restaurant_id,
+            cityId: restaurantDb.city_id,
+            name: restaurantDb.name,
+            location: restaurantDb.location,
+            imageUrl: restaurantDb.image_url,
+            priceSymbols: restaurantDb.price_symbols,
         }
 
         return restaurant
@@ -19,16 +19,16 @@ const getAllRestaurants = async (): Promise<Restaurant[]> => {
 }
 
 const getRestaurantsByCityId = async (cityId: number): Promise<Restaurant[]> => {
-    const [results] = await connection.execute<RestaurantDB[]>('SELECT * FROM restaurants WHERE city_id = ?', [cityId]);
+    const [results] = await connection.execute<RestaurantDb[]>('SELECT * FROM restaurants WHERE city_id = ?', [cityId]);
 
-    return results.map(restaurantDB => {
+    return results.map(restaurantDb => {
         const restaurant: Restaurant = {
-            restaurantId: restaurantDB.restaurant_id,
-            cityId: restaurantDB.city_id,
-            name: restaurantDB.name,
-            location: restaurantDB.location,
-            imageUrl: restaurantDB.image_url,
-            priceSymbols: restaurantDB.price_symbols,
+            restaurantId: restaurantDb.restaurant_id,
+            cityId: restaurantDb.city_id,
+            name: restaurantDb.name,
+            location: restaurantDb.location,
+            imageUrl: restaurantDb.image_url,
+            priceSymbols: restaurantDb.price_symbols,
         }
 
         return restaurant

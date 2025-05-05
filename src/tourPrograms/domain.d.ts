@@ -8,7 +8,7 @@ export type TourProgram = {
     description: string,
 }
 
-export type TourProgramDB = RowDataPacket & {
+export type TourProgramDb = RowDataPacket & {
     tour_program_id: number,
     tour_id: number,
     day: number,

@@ -7,7 +7,7 @@ export type Room = {
     imageUrl: string
 }
 
-export type RoomDB = RowDataPacket & {
+export type RoomDb = RowDataPacket & {
     room_id: number,
     hotel_id: number,
     name: string,

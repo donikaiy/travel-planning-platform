@@ -6,7 +6,7 @@ export type HotelService = {
     text: string
 }
 
-export type HotelServiceDB = RowDataPacket & {
+export type HotelServiceDb = RowDataPacket & {
     hotel_service_id: number,
     hotel_id: number,
     text: string

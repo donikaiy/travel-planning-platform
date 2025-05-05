@@ -6,7 +6,7 @@ export type FamousRestaurantRating = {
     rating: number,
 }
 
-export type FamousRestaurantRatingDB = RowDataPacket & {
+export type FamousRestaurantRatingDb = RowDataPacket & {
     rating_id: number,
     restaurant_id: number,
     rating: number,

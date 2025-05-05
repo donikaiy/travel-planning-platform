@@ -9,7 +9,7 @@ export type Restaurant = {
     priceSymbols: string,
 }
 
-export type RestaurantDB = RowDataPacket & {
+export type RestaurantDb = RowDataPacket & {
     restaurant_id: number,
     city_id: number,
     name: string,

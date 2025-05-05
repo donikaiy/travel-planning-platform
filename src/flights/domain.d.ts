@@ -12,7 +12,7 @@ export type Flight = {
     airline: string,
 }
 
-export type FlightDB = RowDataPacket & {
+export type FlightDb = RowDataPacket & {
     flight_id: number,
     origin_city_id: number,
     destination_city_id: number,

@@ -10,7 +10,7 @@ export type Tour = {
     highlights: string,
 };
 
-export type TourDB = RowDataPacket & {
+export type TourDb = RowDataPacket & {
     tour_id: number,
     city_id: number,
     image_url: string,

@@ -1,19 +1,19 @@
 import {connection} from "../repository";
-import {Hotel, HotelDB} from "./domain";
+import {Hotel, HotelDb} from "./domain";
 
 const getAllHotels = async (): Promise<Hotel[]> => {
-    const [results] = await connection.query<HotelDB[]>('SELECT * FROM hotels');
+    const [results] = await connection.query<HotelDb[]>('SELECT * FROM hotels');
 
-    return results.map(hotelDB => {
+    return results.map(hotelDb => {
         const hotel: Hotel = {
-            hotelId: hotelDB.hotel_id,
-            galleryId: hotelDB.gallery_id,
-            cityId: hotelDB.city_id,
-            name: hotelDB.name,
-            location: hotelDB.location,
-            about: hotelDB.about,
-            price: hotelDB.price,
-            preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
+            hotelId: hotelDb.hotel_id,
+            galleryId: hotelDb.gallery_id,
+            cityId: hotelDb.city_id,
+            name: hotelDb.name,
+            location: hotelDb.location,
+            about: hotelDb.about,
+            price: hotelDb.price,
+            preferredGalleryEntryId: hotelDb.preferred_gallery_entry_id
         }
 
         return hotel
@@ -21,39 +21,39 @@ const getAllHotels = async (): Promise<Hotel[]> => {
 }
 
 const getHotelById = async (hotelId: number): Promise<Hotel> => {
-    const [result] = await connection.execute<HotelDB[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
+    const [result] = await connection.execute<HotelDb[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
 
     if (result.length === 0) {
         throw new Error(`Hotel with id ${hotelId} not found`)
     }
 
-    const hotelDB = result[0]
+    const hotelDb = result[0]
 
     return {
-        hotelId: hotelDB.hotel_id,
-        galleryId: hotelDB.gallery_id,
-        cityId: hotelDB.city_id,
-        name: hotelDB.name,
-        location: hotelDB.location,
-        about: hotelDB.about,
-        price: hotelDB.price,
-        preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
+        hotelId: hotelDb.hotel_id,
+        galleryId: hotelDb.gallery_id,
+        cityId: hotelDb.city_id,
+        name: hotelDb.name,
+        location: hotelDb.location,
+        about: hotelDb.about,
+        price: hotelDb.price,
+        preferredGalleryEntryId: hotelDb.preferred_gallery_entry_id
     }
 }
 
 const getHotelsByCityId = async (cityId: number): Promise<Hotel[]> => {
-    const [results] = await connection.execute<HotelDB[]>('SELECT * FROM hotels WHERE city_id = ?', [cityId]);
+    const [results] = await connection.execute<HotelDb[]>('SELECT * FROM hotels WHERE city_id = ?', [cityId]);
 
-    return results.map(hotelDB => {
+    return results.map(hotelDb => {
         const hotel: Hotel = {
-            hotelId: hotelDB.hotel_id,
-            galleryId: hotelDB.gallery_id,
-            cityId: hotelDB.city_id,
-            name: hotelDB.name,
-            location: hotelDB.location,
-            about: hotelDB.about,
-            price: hotelDB.price,
-            preferredGalleryEntryId: hotelDB.preferred_gallery_entry_id
+            hotelId: hotelDb.hotel_id,
+            galleryId: hotelDb.gallery_id,
+            cityId: hotelDb.city_id,
+            name: hotelDb.name,
+            location: hotelDb.location,
+            about: hotelDb.about,
+            price: hotelDb.price,
+            preferredGalleryEntryId: hotelDb.preferred_gallery_entry_id
         }
 
         return hotel

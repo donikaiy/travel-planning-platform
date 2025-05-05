@@ -13,7 +13,7 @@ export type Attraction = {
     additionalInformation: string,
 }
 
-export type AttractionDB = RowDataPacket & {
+export type AttractionDb = RowDataPacket & {
     attraction_id: number,
     city_id: number,
     name: string,

@@ -7,7 +7,7 @@ export type City = {
     imageUrl: string,
 }
 
-export type CityDB = RowDataPacket & {
+export type CityDb = RowDataPacket & {
     city_id: number,
     country_id: number,
     name: string,
