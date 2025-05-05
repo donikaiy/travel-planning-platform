@@ -1,21 +1,21 @@
 import express, {Request, Response} from "express";
-import {getAllReadyTours, getReadyTourById} from "./service";
+import {getAllTours, getTourById} from "./service";
 
 const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const readyTours = await getAllReadyTours();
-        res.json(readyTours)
+        const tours = await getAllTours();
+        res.json(tours)
     } catch (err: any) {
         res.status(500).json({error: err.message})
     }
 })
 
-router.get('/:readyTourId', async (req: Request, res: Response) => {
+router.get('/:tourId', async (req: Request, res: Response) => {
     try {
-        const readyTour = await getReadyTourById(Number(req.params.readyTourId));
-        res.json(readyTour)
+        const tour = await getTourById(Number(req.params.tourId));
+        res.json(tour)
     } catch (err: any) {
         res.status(500).json({error: err.message})
     }
