@@ -6,7 +6,7 @@ export type Cuisine = {
     text: string,
 }
 
-export type CuisineDB = RowDataPacket & {
+export type CuisineDb = RowDataPacket & {
     cuisine_id: number,
     country_id: number,
     text: string,

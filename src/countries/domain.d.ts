@@ -8,7 +8,7 @@ export type Country = {
     history: string,
 }
 
-export type CountryDB = RowDataPacket & {
+export type CountryDb = RowDataPacket & {
     country_id: number,
     continent_id: number,
     gallery_id: number,

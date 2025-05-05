@@ -1,21 +1,21 @@
-import {Flight, FlightDB} from "./domain";
+import {Flight, FlightDb} from "./domain";
 import {connection} from "../repository";
-import {CityDB} from "../cities/domain";
+import {CityDb} from "../cities/domain";
 
 const getAllFlights = async (): Promise<Flight[]> => {
-    const [results] = await connection.query<FlightDB[]>('SELECT * FROM flights');
+    const [results] = await connection.query<FlightDb[]>('SELECT * FROM flights');
 
-    return results.map(flightDB => {
+    return results.map(flightDb => {
         const flight: Flight = {
-            flightId: flightDB.flight_id,
-            originCityId: flightDB.origin_city_id,
-            destinationCityId: flightDB.destination_city_id,
-            departAt: flightDB.depart_at,
-            arriveAt: flightDB.arrive_at,
-            numberOfStops: flightDB.number_of_stops,
-            price: flightDB.price,
-            imageUrl: flightDB.image_url,
-            airline: flightDB.airline,
+            flightId: flightDb.flight_id,
+            originCityId: flightDb.origin_city_id,
+            destinationCityId: flightDb.destination_city_id,
+            departAt: flightDb.depart_at,
+            arriveAt: flightDb.arrive_at,
+            numberOfStops: flightDb.number_of_stops,
+            price: flightDb.price,
+            imageUrl: flightDb.image_url,
+            airline: flightDb.airline,
         }
 
         return flight
@@ -23,7 +23,7 @@ const getAllFlights = async (): Promise<Flight[]> => {
 }
 
 const getUniqueCityIdsFromFlights = async () => {
-    const [results] = await connection.query<CityDB[]>(
+    const [results] = await connection.query<CityDb[]>(
         'SELECT origin_city_id AS city_id FROM flights UNION SELECT destination_city_id AS city_id FROM flights'
     );
 

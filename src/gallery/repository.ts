@@ -1,15 +1,15 @@
-import {Gallery, GalleryDB} from "./gallery";
+import {Gallery, GalleryDb} from "./gallery";
 import {connection} from "../repository";
 import {placeholderIds} from "../utils/database";
 
 const getGalleryImagesByGalleryId = async (galleryId: number): Promise<Gallery[]> => {
-    const [results] = await connection.execute<GalleryDB[]>('SELECT * FROM gallery WHERE gallery_id = ?', [galleryId]);
+    const [results] = await connection.execute<GalleryDb[]>('SELECT * FROM gallery WHERE gallery_id = ?', [galleryId]);
 
-    return results.map(galleryDB => {
+    return results.map(galleryDb => {
         const gallery: Gallery = {
-            galleryEntry: galleryDB.gallery_entry,
-            galleryId: galleryDB.gallery_id,
-            imageUrl: galleryDB.image_url
+            galleryEntry: galleryDb.gallery_entry,
+            galleryId: galleryDb.gallery_id,
+            imageUrl: galleryDb.image_url
         }
 
         return gallery;
@@ -17,13 +17,13 @@ const getGalleryImagesByGalleryId = async (galleryId: number): Promise<Gallery[]
 }
 
 const getAllGalleryImagesByGalleryEntries = async (galleryEntries: number[]): Promise<Gallery[]> => {
-    const [results] = await connection.execute<GalleryDB[]>(`SELECT * FROM gallery WHERE gallery_entry IN (${placeholderIds(galleryEntries)})`, galleryEntries)
+    const [results] = await connection.execute<GalleryDb[]>(`SELECT * FROM gallery WHERE gallery_entry IN (${placeholderIds(galleryEntries)})`, galleryEntries)
 
-    return results.map(galleryDB => {
+    return results.map(galleryDb => {
         const gallery: Gallery = {
-            galleryEntry: galleryDB.gallery_entry,
-            galleryId: galleryDB.gallery_id,
-            imageUrl: galleryDB.image_url
+            galleryEntry: galleryDb.gallery_entry,
+            galleryId: galleryDb.gallery_id,
+            imageUrl: galleryDb.image_url
         }
 
         return gallery;

@@ -6,7 +6,7 @@ export type Continent = {
     imageUrl: string,
 }
 
-export type ContinentDB = RowDataPacket & {
+export type ContinentDb = RowDataPacket & {
     continent_id: number,
     name: string,
     image_url: string,

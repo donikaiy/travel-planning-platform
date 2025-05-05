@@ -5,7 +5,7 @@ export type NearbyAttraction = {
     hotelId: number,
 }
 
-export type NearbyAttractionDB = RowDataPacket & {
+export type NearbyAttractionDb = RowDataPacket & {
     attraction_id: number,
     hotel_id: number,
 }

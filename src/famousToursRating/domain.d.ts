@@ -1,13 +1,13 @@
 import {RowDataPacket} from "mysql2";
 
-export type FamousHotelRating = {
+export type FamousTourRating = {
     ratingId: number,
-    hotelId: number,
+    tourId: number,
     rating: number,
 }
 
-export type FamousHotelRatingDb = RowDataPacket & {
+export type FamousTourRatingDb = RowDataPacket & {
     rating_id: number,
-    hotel_id: number,
+    tour_id: number,
     rating: number,
 }

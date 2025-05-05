@@ -11,7 +11,7 @@ export type Hotel = {
     preferredGalleryEntryId: number
 }
 
-export type HotelDB = RowDataPacket & {
+export type HotelDb = RowDataPacket & {
     hotel_id: number,
     gallery_id: number,
     city_id: number,

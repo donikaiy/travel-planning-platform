@@ -1,17 +1,17 @@
-import {City, CityDB} from "./domain";
+import {City, CityDb} from "./domain";
 import {connection} from "../repository";
 import {ResultSetHeader} from "mysql2";
 import {placeholderIds} from "../utils/database";
 
 const getAllCities = async (): Promise<City[]> => {
-    const [results] = await connection.query<CityDB[]>('SELECT * FROM cities');
+    const [results] = await connection.query<CityDb[]>('SELECT * FROM cities');
 
-    return results.map(cityDB => {
+    return results.map(cityDb => {
         const city: City = {
-            cityId: cityDB.city_id,
-            countryId: cityDB.country_id,
-            name: cityDB.name,
-            imageUrl: cityDB.image_url,
+            cityId: cityDb.city_id,
+            countryId: cityDb.country_id,
+            name: cityDb.name,
+            imageUrl: cityDb.image_url,
         }
 
         return city
@@ -19,19 +19,19 @@ const getAllCities = async (): Promise<City[]> => {
 }
 
 const getCityById = async (cityId: number): Promise<City> => {
-    const [result] = await connection.execute<CityDB[]>('SELECT * FROM cities WHERE city_id = ?', [cityId])
+    const [result] = await connection.execute<CityDb[]>('SELECT * FROM cities WHERE city_id = ?', [cityId])
 
     if (result.length == 0) {
         throw new Error(`City with id ${cityId} not found.`)
     }
 
-    const cityDB = result[0]
+    const cityDb = result[0]
 
     return {
-        cityId: cityDB.city_id,
-        countryId: cityDB.country_id,
-        name: cityDB.name,
-        imageUrl: cityDB.image_url,
+        cityId: cityDb.city_id,
+        countryId: cityDb.country_id,
+        name: cityDb.name,
+        imageUrl: cityDb.image_url,
     }
 }
 
@@ -53,14 +53,14 @@ const createCity = async (countryId: number, name: string, imageUrl: string): Pr
 }
 
 const getCitiesByIds = async(ids: number[]): Promise<City[]> => {
-    const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE cities.city_id IN (${placeholderIds(ids)})`, ids)
+    const [results] = await connection.execute<CityDb[]>(`SELECT * FROM cities WHERE cities.city_id IN (${placeholderIds(ids)})`, ids)
 
-    return results.map(cityDB => {
+    return results.map(cityDb => {
         const city: City = {
-            cityId: cityDB.city_id,
-            countryId: cityDB.country_id,
-            name: cityDB.name,
-            imageUrl: cityDB.image_url,
+            cityId: cityDb.city_id,
+            countryId: cityDb.country_id,
+            name: cityDb.name,
+            imageUrl: cityDb.image_url,
         }
 
         return city
@@ -68,14 +68,14 @@ const getCitiesByIds = async(ids: number[]): Promise<City[]> => {
 }
 
 const getAllCitiesByCountryId = async (countryId: number): Promise<City[]> => {
-    const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE country_id = ?`, [countryId]);
+    const [results] = await connection.execute<CityDb[]>(`SELECT * FROM cities WHERE country_id = ?`, [countryId]);
 
-    return results.map(cityDB => {
+    return results.map(cityDb => {
         const city: City = {
-            cityId: cityDB.city_id,
-            countryId: cityDB.country_id,
-            name: cityDB.name,
-            imageUrl: cityDB.image_url,
+            cityId: cityDb.city_id,
+            countryId: cityDb.country_id,
+            name: cityDb.name,
+            imageUrl: cityDb.image_url,
         }
 
         return city
@@ -83,18 +83,18 @@ const getAllCitiesByCountryId = async (countryId: number): Promise<City[]> => {
 }
 
 const getCitiesByCountryIdsMap = async (ids: number[]): Promise<Map<number, City[]>> => {
-    const [results] = await connection.execute<CityDB[]>(`SELECT *
+    const [results] = await connection.execute<CityDb[]>(`SELECT *
                                                           FROM cities
                                                           WHERE country_id IN (${placeholderIds(ids)})`, ids)
 
     const countryMap = new Map<number, City[]>();
 
-    results.forEach(cityDB => {
+    results.forEach(cityDb => {
         const city: City = {
-            cityId: cityDB.city_id,
-            countryId: cityDB.country_id,
-            name: cityDB.name,
-            imageUrl: cityDB.image_url,
+            cityId: cityDb.city_id,
+            countryId: cityDb.country_id,
+            name: cityDb.name,
+            imageUrl: cityDb.image_url,
         }
 
         if(countryMap.has((city.countryId))) {

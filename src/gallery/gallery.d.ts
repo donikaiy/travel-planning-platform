@@ -6,7 +6,7 @@ export type Gallery = {
     imageUrl: string,
 }
 
-export type GalleryDB = RowDataPacket & {
+export type GalleryDb = RowDataPacket & {
     gallery_entry: number,
     gallery_id: number,
     image_url: string,

@@ -1,7 +1,7 @@
 import {RowDataPacket} from "mysql2";
 
-export type ReadyTour = {
-    readyTourId: number,
+export type Tour = {
+    tourId: number,
     cityId: number,
     imageUrl: string,
     name: string,
@@ -10,8 +10,8 @@ export type ReadyTour = {
     highlights: string,
 };
 
-export type ReadyTourDB = RowDataPacket & {
-    ready_tour_id: number,
+export type TourDb = RowDataPacket & {
+    tour_id: number,
     city_id: number,
     image_url: string,
     name: string,

@@ -1,14 +1,14 @@
 import {connection} from "../repository";
-import {HotelService, HotelServiceDB} from "./domain";
+import {HotelService, HotelServiceDb} from "./domain";
 
 const getAllServicesByHotelId = async (hotelId: number): Promise<HotelService[]> => {
-    const [results] = await connection.execute<HotelServiceDB[]>(`SELECT * FROM hotel_services WHERE hotel_id = ?`, [hotelId]);
+    const [results] = await connection.execute<HotelServiceDb[]>(`SELECT * FROM hotel_services WHERE hotel_id = ?`, [hotelId]);
 
-    return results.map(hotelServiceDB => {
+    return results.map(hotelServiceDb => {
         const hotelService: HotelService = {
-            hotelServiceId: hotelServiceDB.hotel_service_id,
-            hotelId: hotelServiceDB.hotel_id,
-            text: hotelServiceDB.text,
+            hotelServiceId: hotelServiceDb.hotel_service_id,
+            hotelId: hotelServiceDb.hotel_id,
+            text: hotelServiceDb.text,
         }
 
         return hotelService
