@@ -4,6 +4,11 @@ import {placeholderIds} from "../utils/database";
 
 const getAllAttractions = async (): Promise<Attraction[]> => {
     const [results] = await connection.query<AttractionDB[]>('SELECT * FROM attractions')
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,
@@ -26,7 +31,7 @@ const getAttractionById = async (attractionId: number): Promise<Attraction> => {
     const [result] = await connection.execute<AttractionDB[]>('SELECT * FROM attractions WHERE attraction_id = ?', [attractionId])
 
     if (result.length === 0) {
-        throw new Error('Attraction not found')
+        throw new Error(`Attraction with id ${attractionId} not found`)
     }
 
     const attractionDB = result[0]
@@ -46,10 +51,15 @@ const getAttractionById = async (attractionId: number): Promise<Attraction> => {
 }
 
 const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
-    const [result] = await connection.execute<AttractionDB[]>(`SELECT *
+    const [results] = await connection.execute<AttractionDB[]>(`SELECT *
                                                                FROM attractions
                                                                WHERE attraction_id IN (${placeholderIds(ids)})`, ids)
-    return result.map(attractionDB => {
+
+    if (results.length == 0) {
+        return [];
+    }
+
+    return results.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,
             cityId: attractionDB.city_id,
@@ -69,6 +79,11 @@ const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
 
 const getAttractionsByCityId = async (cityId: number): Promise<Attraction[]> => {
     const [results] = await connection.execute<AttractionDB[]>(`SELECT * FROM attractions WHERE city_id = ?`, [cityId])
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(attractionDB => {
         const attraction: Attraction = {
             attractionId: attractionDB.attraction_id,

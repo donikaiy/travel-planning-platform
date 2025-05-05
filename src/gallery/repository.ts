@@ -5,6 +5,10 @@ import {placeholderIds} from "../utils/database";
 const getGalleryImagesByGalleryId = async (galleryId: number): Promise<Gallery[]> => {
     const [results] = await connection.execute<GalleryDB[]>('SELECT * FROM gallery WHERE gallery_id = ?', [galleryId]);
 
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(galleryDB => {
         const gallery: Gallery = {
             galleryEntry: galleryDB.gallery_entry,
@@ -18,6 +22,10 @@ const getGalleryImagesByGalleryId = async (galleryId: number): Promise<Gallery[]
 
 const getAllGalleryImagesByGalleryEntries = async (galleryEntries: number[]): Promise<Gallery[]> => {
     const [results] = await connection.execute<GalleryDB[]>(`SELECT * FROM gallery WHERE gallery_entry IN (${placeholderIds(galleryEntries)})`, galleryEntries)
+
+    if (results.length == 0) {
+        return [];
+    }
 
     return results.map(galleryDB => {
         const gallery: Gallery = {

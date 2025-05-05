@@ -1,11 +1,11 @@
 import express, {Request, Response} from "express";
-import {getRatingByRestaurantId} from "./service";
+import {getAllRatingsByRestaurantIdsMap} from "./service";
 
 const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const rating = await getRatingByRestaurantId(Number(req.query.restaurantId))
+        const rating = await getAllRatingsByRestaurantIdsMap(Number(req.query.restaurantId))
         res.json(rating)
     } catch (err: any) {
         res.status(500).json({error: err.message})

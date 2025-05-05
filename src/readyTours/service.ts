@@ -1,16 +1,16 @@
 import readyTourRepository from "../readyTours/repository";
 import {getAllTourProgramsByReadyTourId} from "../tourPrograms/service";
-import {getRatingsByReadyToursIdsMap} from "../famousReadyToursRating/service";
 import {getHotelsByCityId} from "../hotels/service";
 import {getRestaurantsByCityId} from "../restaurants/service";
 import {getAttractionsByCityId} from "../attractions/service";
+import {getAllRatingsByReadyTourIdsMap} from "../famousReadyToursRating/service";
 
 export const getAllReadyTours = async () => {
     const readyTours = await readyTourRepository.getAllReadyTours()
 
     const readyToursIds = readyTours.map(readyTourId => readyTourId.readyTourId)
 
-    const ratings = await getRatingsByReadyToursIdsMap(readyToursIds)
+    const ratings = await getAllRatingsByReadyTourIdsMap(readyToursIds)
 
     return readyTours.map(readyTour => {
         return {

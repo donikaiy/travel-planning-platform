@@ -5,6 +5,11 @@ import {placeholderIds} from "../utils/database";
 
 const getAllCountries = async (): Promise<Country[]> => {
     const [results] = await connection.query<CountryDB[]>('SELECT * FROM countries')
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(countryDB => {
         const country: Country = {
             countryId: countryDB.country_id,
@@ -48,7 +53,7 @@ const getCountryById = async (countryId: number): Promise<Country> => {
     const [result] = await connection.execute<CountryDB[]>('SELECT * FROM countries WHERE country_id = ?', [countryId])
 
     if (result.length === 0) {
-        throw new Error('Country not found')
+        throw new Error(`Country with id ${countryId} not found`)
     }
 
     const countryDB = result[0]

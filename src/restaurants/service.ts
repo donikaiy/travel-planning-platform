@@ -1,12 +1,12 @@
 import restaurantRepository from '../restaurants/repository';
-import {getRatingsByRestaurantIdsMap} from "../famousRestaurantsRating/service";
+import {getAllRatingsByRestaurantIdsMap} from "../famousRestaurantsRating/service";
 
 export const getAllRestaurants = async () => {
     const restaurants = await restaurantRepository.getAllRestaurants()
 
     const restaurantIds = restaurants.map(restaurant => restaurant.restaurantId)
 
-    const rating = await getRatingsByRestaurantIdsMap(restaurantIds)
+    const rating = await getAllRatingsByRestaurantIdsMap(restaurantIds)
 
     return restaurants.map(restaurant => {
         return {

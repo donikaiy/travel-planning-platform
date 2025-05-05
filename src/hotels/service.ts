@@ -2,16 +2,16 @@ import {getAllServicesByHotelId} from "../hotel_services/service";
 import hotelRepository from "../hotels/repository";
 import {getAllRoomsByHotelId} from "../rooms/service";
 import {getAllNearbyAttractionsByHotelId} from "../nearby_attractions/service";
-import {getRatingByHotelId} from "../famousHotelsRating/service";
 import {Gallery} from "../gallery/gallery";
 import {getAllGalleryImagesByGalleryEntries, getGalleryImagesByGalleryId} from "../gallery/service";
+import {getAllHotelRatingsByHotelIdMap} from "../famousHotelsRating/service";
 
 export const getAllHotels = async () => {
     const hotels = await hotelRepository.getAllHotels();
 
     const hotelIds = hotels.map(hotel => hotel.hotelId)
 
-    const rating = await getRatingByHotelId(hotelIds)
+    const rating = await getAllHotelRatingsByHotelIdMap(hotelIds)
 
     const preferredGalleryEntries = hotels.map(hotel => hotel.preferredGalleryEntryId)
 
@@ -27,7 +27,7 @@ export const getAllHotels = async () => {
         return {
             ...hotel,
             rating: rating.get(hotel.hotelId) || [],
-            image: preferredImageUrls.get(hotel.preferredGalleryEntryId)
+            imageUrl: preferredImageUrls.get(hotel.preferredGalleryEntryId)
         }
     })
 }
@@ -67,7 +67,7 @@ export const getHotelsByCityId = async (cityId: number) => {
     return hotels.map(hotel => {
         return {
             ...hotel,
-            image: preferredImageUrls.get(hotel.preferredGalleryEntryId)
+            imageUrl: preferredImageUrls.get(hotel.preferredGalleryEntryId)
         }
     })
 }

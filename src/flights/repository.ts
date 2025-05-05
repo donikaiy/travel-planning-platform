@@ -4,6 +4,11 @@ import {CityDB} from "../cities/domain";
 
 const getAllFlights = async (): Promise<Flight[]> => {
     const [results] = await connection.query<FlightDB[]>('SELECT * FROM flights');
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(flightDB => {
         const flight: Flight = {
             flightId: flightDB.flight_id,
@@ -25,6 +30,10 @@ const getUniqueCityIdsFromFlights = async () => {
     const [results] = await connection.query<CityDB[]>(
         'SELECT origin_city_id AS city_id FROM flights UNION SELECT destination_city_id AS city_id FROM flights'
     );
+
+    if (results.length == 0) {
+        return [];
+    }
 
     return results.map(result => result.city_id);
 };

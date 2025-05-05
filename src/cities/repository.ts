@@ -5,6 +5,11 @@ import {placeholderIds} from "../utils/database";
 
 const getAllCities = async (): Promise<City[]> => {
     const [results] = await connection.query<CityDB[]>('SELECT * FROM cities');
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(cityDB => {
         const city: City = {
             cityId: cityDB.city_id,
@@ -17,18 +22,21 @@ const getAllCities = async (): Promise<City[]> => {
     })
 }
 
-const getCityById = async (cityId: number): Promise<City[]> => {
+const getCityById = async (cityId: number): Promise<City> => {
     const [result] = await connection.execute<CityDB[]>('SELECT * FROM cities WHERE city_id = ?', [cityId])
-    return result.map(cityDB => {
-        const city: City = {
-            cityId: cityDB.city_id,
-            countryId: cityDB.country_id,
-            name: cityDB.name,
-            imageUrl: cityDB.image_url,
-        }
 
-        return city
-    })
+    if (result.length == 0) {
+        throw new Error(`City with id ${cityId} not found.`)
+    }
+
+    const cityDB = result[0]
+
+    return {
+        cityId: cityDB.city_id,
+        countryId: cityDB.country_id,
+        name: cityDB.name,
+        imageUrl: cityDB.image_url,
+    }
 }
 
 const checkCityExists = async (name: string): Promise<any> => {
@@ -50,6 +58,11 @@ const createCity = async (countryId: number, name: string, imageUrl: string): Pr
 
 const getCitiesByIds = async(ids: number[]): Promise<City[]> => {
     const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE cities.city_id IN (${placeholderIds(ids)})`, ids)
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(cityDB => {
         const city: City = {
             cityId: cityDB.city_id,
@@ -64,6 +77,11 @@ const getCitiesByIds = async(ids: number[]): Promise<City[]> => {
 
 const getAllCitiesByCountryId = async (countryId: number): Promise<City[]> => {
     const [results] = await connection.execute<CityDB[]>(`SELECT * FROM cities WHERE country_id = ?`, [countryId]);
+
+    if (results.length == 0) {
+        return [];
+    }
+
     return results.map(cityDB => {
         const city: City = {
             cityId: cityDB.city_id,
