@@ -1,5 +1,5 @@
 import restaurantRepository from '../restaurants/repository';
-import {getAllRatingsByRestaurantIdsMap} from "../famousRestaurantsRating/service";
+import {getAllRatingsByRestaurantIdsMap} from "../restaurantsRating/service";
 
 export const getAllRestaurants = async () => {
     const restaurants = await restaurantRepository.getAllRestaurants()
