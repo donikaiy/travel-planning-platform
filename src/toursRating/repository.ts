@@ -1,14 +1,14 @@
 import {connection} from "../repository";
 import {placeholderIds} from "../utils/database";
-import {FamousTourRating, FamousTourRatingDb} from "./domain";
+import {TourRating, TourRatingDb} from "./domain";
 
-const getAllToursRatingsByTourIdsMap = async (ids: number[]): Promise<Map<number, FamousTourRating[]>> => {
-    const [results] = await connection.execute<FamousTourRatingDb[]>(`SELECT * FROM famous_tours_rating WHERE tour_id IN (${placeholderIds(ids)})`, ids);
+const getAllToursRatingsByTourIdsMap = async (ids: number[]): Promise<Map<number, TourRating[]>> => {
+    const [results] = await connection.execute<TourRatingDb[]>(`SELECT * FROM tours_rating WHERE tour_id IN (${placeholderIds(ids)})`, ids);
 
-    const ratingsMap = new Map<number, FamousTourRating[]>();
+    const ratingsMap = new Map<number, TourRating[]>();
 
     results.forEach(ratingDb => {
-        const rating: FamousTourRating = {
+        const rating: TourRating = {
             ratingId: ratingDb.rating_id,
             tourId: ratingDb.tour_id,
             rating: ratingDb.rating,
