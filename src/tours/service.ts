@@ -3,7 +3,7 @@ import {getAllTourProgramsByTourId} from "../tourPrograms/service";
 import {getHotelsByCityId} from "../hotels/service";
 import {getRestaurantsByCityId} from "../restaurants/service";
 import {getAttractionsByCityId} from "../attractions/service";
-import {getAllRatingsByTourIdsMap} from "../famousToursRating/service";
+import {getAllRatingsByTourIdsMap} from "../toursRating/service";
 
 export const getAllTours = async () => {
     const tours = await tourRepository.getAllTours()
