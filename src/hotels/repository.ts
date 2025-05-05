@@ -3,6 +3,7 @@ import {Hotel, HotelDB} from "./domain";
 
 const getAllHotels = async (): Promise<Hotel[]> => {
     const [results] = await connection.query<HotelDB[]>('SELECT * FROM hotels');
+
     return results.map(hotelDB => {
         const hotel: Hotel = {
             hotelId: hotelDB.hotel_id,
@@ -23,7 +24,7 @@ const getHotelById = async (hotelId: number): Promise<Hotel> => {
     const [result] = await connection.execute<HotelDB[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
 
     if (result.length === 0) {
-        throw new Error('Hotel not found')
+        throw new Error(`Hotel with id ${hotelId} not found`)
     }
 
     const hotelDB = result[0]

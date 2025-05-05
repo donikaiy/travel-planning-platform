@@ -4,6 +4,7 @@ import {CityDB} from "../cities/domain";
 
 const getAllFlights = async (): Promise<Flight[]> => {
     const [results] = await connection.query<FlightDB[]>('SELECT * FROM flights');
+
     return results.map(flightDB => {
         const flight: Flight = {
             flightId: flightDB.flight_id,

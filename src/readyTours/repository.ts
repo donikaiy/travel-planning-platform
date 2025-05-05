@@ -3,6 +3,7 @@ import {connection} from "../repository";
 
 const getAllReadyTours = async (): Promise<ReadyTour[]> => {
     const [results] = await connection.query<ReadyTourDB[]>('SELECT * FROM ready_tours')
+
     return results.map(readyTourDB => {
         const readyTour: ReadyTour = {
             readyTourId: readyTourDB.ready_tour_id,
@@ -22,7 +23,7 @@ const getReadyTourById = async (readyTourId: number): Promise<ReadyTour> => {
     const [result] = await connection.execute<ReadyTourDB[]>('SELECT * FROM ready_tours WHERE ready_tour_id = ?', [readyTourId])
 
     if (result.length === 0) {
-        throw new Error('ReadyTour not found')
+        throw new Error(`Tour with id ${readyTourId} not found`)
     }
 
     const readyTourDB = result[0]

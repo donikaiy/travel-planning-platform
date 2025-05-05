@@ -3,6 +3,7 @@ import {TourProgram, TourProgramDB} from "./domain";
 
 const getAllTourProgramsByReadyTourId = async (readyTourId: number): Promise<TourProgram[]> => {
     const [results] = await connection.execute<TourProgramDB[]>(`SELECT * FROM tour_program WHERE ready_tour_id = ?`, [readyTourId]);
+
     return results.map(tourProgramDB => {
         const tourProgram: TourProgram = {
             tourProgramId: tourProgramDB.tour_program_id,
