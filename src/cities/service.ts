@@ -1,7 +1,24 @@
 import cityRepository from "../cities/repository";
+import {getAttractionsByCityIdsMap} from "../attractions/service";
 
 export const getAllCities = async () => {
     return cityRepository.getAllCities()
+}
+
+export const getAllCitiesWithAttractions = async () => {
+    const cities = await cityRepository.getAllCities()
+
+    const cityIds = cities.map(city => city.cityId)
+
+    const attractionsMap = await getAttractionsByCityIdsMap(cityIds)
+
+    return cities.map(city => {
+        return {
+            ...city,
+            attractions: attractionsMap.get(city.cityId) || []
+        }
+    })
+
 }
 
 export const getCityById = async (cityId: number) => {
