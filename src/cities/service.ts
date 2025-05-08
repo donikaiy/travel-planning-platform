@@ -1,24 +1,20 @@
 import cityRepository from "../cities/repository";
 import {getAttractionsByCityIdsMap} from "../attractions/service";
+import {CityWithExtras} from "./domain";
 
-export const getAllCities = async () => {
-    return cityRepository.getAllCities()
-}
+export const getAllCities = async ({includeAttractions}: any): Promise<CityWithExtras[]> => {
+    const cities:CityWithExtras[] = await cityRepository.getAllCities();
 
-export const getAllCitiesWithAttractions = async () => {
-    const cities = await cityRepository.getAllCities()
+    if (includeAttractions) {
+        const cityIds = cities.map((city) => city.cityId);
+        const attractionsMap = await getAttractionsByCityIdsMap(cityIds);
 
-    const cityIds = cities.map(city => city.cityId)
+        cities.forEach((city) => {
+            city.attractions = attractionsMap.get(city.cityId) || [];
+        });
+    }
 
-    const attractionsMap = await getAttractionsByCityIdsMap(cityIds)
-
-    return cities.map(city => {
-        return {
-            ...city,
-            attractions: attractionsMap.get(city.cityId) || []
-        }
-    })
-
+    return cities;
 }
 
 export const getCityById = async (cityId: number) => {
