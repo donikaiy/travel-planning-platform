@@ -1,4 +1,5 @@
 import {RowDataPacket} from "mysql2";
+import {City} from "../cities/domain";
 
 export type Country = {
     countryId: number,
@@ -14,4 +15,8 @@ export type CountryDb = RowDataPacket & {
     gallery_id: number,
     name: string,
     history: string,
+}
+
+export type CountryWithExtras = Country & {
+    cities?: City[]
 }
