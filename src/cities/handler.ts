@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const cities = await getAllCities();
+        const cities = await getAllCities({includeAttractions: Boolean(req.query.include_attractions)});
         res.json(cities)
     } catch (err: any) {
         res.status(500).json({error: err.message})
