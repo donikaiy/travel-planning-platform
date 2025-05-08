@@ -2,7 +2,7 @@ import cityRepository from "../cities/repository";
 import {getAttractionsByCityIdsMap} from "../attractions/service";
 import {CityWithExtras} from "./domain";
 
-export const getAllCities = async ({includeAttractions}: any): Promise<CityWithExtras[]> => {
+export const getAllCities = async ({includeAttractions = false}): Promise<CityWithExtras[]> => {
     const cities:CityWithExtras[] = await cityRepository.getAllCities();
 
     if (includeAttractions) {
