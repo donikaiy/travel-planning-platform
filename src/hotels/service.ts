@@ -1,7 +1,7 @@
-import {getAllServicesByHotelId} from "../hotel_services/service";
+import {getAllServicesByHotelId} from "../hotelServices/service";
 import hotelRepository from "../hotels/repository";
 import {getAllRoomsByHotelId} from "../rooms/service";
-import {getAllNearbyAttractionsByHotelId} from "../nearby_attractions/service";
+import {getAllNearbyAttractionsByHotelId} from "../nearbyAttractions/service";
 import {Gallery} from "../gallery/gallery";
 import {getAllGalleryImagesByGalleryEntries, getGalleryImagesByGalleryId} from "../gallery/service";
 import {getAllHotelRatingsByHotelIdMap} from "../hotelsRating/service";

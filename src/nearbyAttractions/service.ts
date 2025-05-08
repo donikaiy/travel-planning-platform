@@ -1,4 +1,4 @@
-import nearbyAttractionRepository from '../nearby_attractions/repository';
+import nearbyAttractionRepository from './/repository';
 import {getAttractionsByIds} from "../attractions/service";
 
 export const getAllNearbyAttractionsByHotelId = async (hotelId: number) => {
