@@ -2,24 +2,22 @@ import countryRepository from '../countries/repository';
 import {getAllCuisinesByCountryId} from "../cuisine/service";
 import {getAllCitiesByCountryId, getCitiesByCountryIdsMap} from "../cities/service";
 import {getGalleryImagesByGalleryId} from "../gallery/service";
+import {CountryWithExtras} from "./domain";
 
-export const getAllCountries = async () => {
-    return countryRepository.getAllCountries()
-}
+export const getAllCountries = async ({includeCities = false}): Promise<CountryWithExtras[]> => {
+    const countries: CountryWithExtras[] = await countryRepository.getAllCountries()
 
-export const getAllCountriesWithCities = async () => {
-    const countries = await countryRepository.getAllCountries()
+    if (includeCities) {
+        const countryIds = countries.map(country => country.countryId)
 
-    const countryIds = countries.map(country => country.countryId)
+        const citiesMap = await getCitiesByCountryIdsMap(countryIds);
 
-    const citiesMap = await getCitiesByCountryIdsMap(countryIds);
+        countries.forEach(country => {
+            country.cities = citiesMap.get(country.countryId) || []
+        })
+    }
 
-    return countries.map(country => {
-        return {
-            ...country,
-            cities: citiesMap.get(country.countryId) || []
-        }
-    })
+    return countries
 }
 
 export const getCountriesByContinentIdsMap = async (ids: number[]) => {
