@@ -22,7 +22,7 @@ export const getAllFlights = async (filters: Filters = {}) => {
     })
 }
 
-export const getDepartureAndReturnFlights = async ({
+export const getRoundTrip = async ({
                                                        departureCityId,
                                                        destinationCityId,
                                                        departAt,
