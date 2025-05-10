@@ -1,7 +1,7 @@
-import attractionRepository from '../attractions/repository';
+import attractionRepository, {Filters} from '../attractions/repository';
 
-export const getAllAttractions = async () => {
-    return attractionRepository.getAllAttractions()
+export const getAllAttractions = async (filters: Filters = {}) => {
+    return attractionRepository.getAllAttractions(filters)
 }
 
 export const getAttractionById = async (attractionId: number) => {
