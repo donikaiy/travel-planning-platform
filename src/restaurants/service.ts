@@ -1,8 +1,8 @@
-import restaurantRepository from '../restaurants/repository';
+import restaurantRepository, {Filters} from '../restaurants/repository';
 import {getAllRatingsByRestaurantIdsMap} from "../restaurantsRating/service";
 
-export const getAllRestaurants = async () => {
-    const restaurants = await restaurantRepository.getAllRestaurants()
+export const getAllRestaurants = async (filters: Filters) => {
+    const restaurants = await restaurantRepository.getAllRestaurants(filters)
 
     const restaurantIds = restaurants.map(restaurant => restaurant.restaurantId)
 
