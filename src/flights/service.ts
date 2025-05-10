@@ -1,9 +1,12 @@
-import flightRepository  from "../flights/repository";
+import flightRepository, {Filters} from "../flights/repository";
 import {getCitiesByIds} from "../cities/service";
-import {Flight} from "./domain";
 
-export const getAllFlights = async (filters = {}) => {
-    const [{outboundFlights, returnFlights}, cityIds] = await Promise.all([
+type FlightWithExtras = Filters & {
+    returnAt?: string;
+}
+
+export const getAllFlights = async (filters: Filters = {}) => {
+    const [flights, cityIds] = await Promise.all([
         flightRepository.getAllFlights(filters),
         flightRepository.getUniqueCityIdsFromFlights()
     ])
@@ -14,14 +17,31 @@ export const getAllFlights = async (filters = {}) => {
 
     cities.forEach((city) => cityMap.set(city.cityId, city.name))
 
-    const mapFlightWithCityNames = (flight: Flight) => ({
-        ...flight,
-        originCity: cityMap.get(flight.originCityId),
-        destinationCity: cityMap.get(flight.destinationCityId)
+    return flights.map((flight) => {
+        return {
+            ...flight,
+            originCity: cityMap.get(flight.originCityId),
+            destinationCity: cityMap.get(flight.destinationCityId)
+        }
+    })
+}
+
+export const getDepartureAndReturnFlights = async ({
+                                                       departureCityId,
+                                                       destinationCityId,
+                                                       departAt,
+                                                       returnAt
+                                                   }: FlightWithExtras) => {
+    const departureFlights = await getAllFlights({departureCityId, destinationCityId, departAt})
+
+    const returnFlights = await getAllFlights({
+        departureCityId: destinationCityId,
+        destinationCityId: departureCityId,
+        departAt: returnAt
     })
 
-    return [
-        ...outboundFlights.map(flight => mapFlightWithCityNames(flight)),
-        ...returnFlights.map(flight => mapFlightWithCityNames(flight))
-    ];
+    return {
+        departureFlights,
+        returnFlights
+    }
 }

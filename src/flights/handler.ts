@@ -1,18 +1,18 @@
 import express, {Request, Response} from "express";
-import {getAllFlights} from "./service";
+import {getDepartureAndReturnFlights} from "./service";
 
 const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
         const filters = {
-            departureCityId: req.query.departureCityId || undefined,
-            destinationCityId: req.query.destinationCityId || undefined,
-            departureDate: req.query.departureDate || undefined,
-            returnDate: req.query.returnDate || undefined,
+            departureCityId: req.query.departureCityId ? Number(req.query.departureCityId) : undefined,
+            destinationCityId: req.query.destinationCityId ? Number(req.query.destinationCityId) : undefined,
+            departAt: req.query.departAt ? String(req.query.departAt) : undefined,
+            returnAt: req.query.returnAt ? String(req.query.returnAt) : undefined
         }
 
-        const flights = await getAllFlights(filters);
+        const flights = await getDepartureAndReturnFlights({departureCityId: filters.departureCityId, destinationCityId: filters.destinationCityId, departAt: filters.departAt, returnAt: filters.returnAt});
         res.json(flights)
     } catch (err: any) {
         res.status(500).json({error: err.message})
