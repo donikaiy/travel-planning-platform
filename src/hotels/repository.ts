@@ -1,8 +1,20 @@
 import {connection} from "../repository";
 import {Hotel, HotelDb} from "./domain";
 
-const getAllHotels = async (): Promise<Hotel[]> => {
-    const [results] = await connection.query<HotelDb[]>('SELECT * FROM hotels');
+export type Filters = {
+    destinationCityId?: number,
+}
+
+const getAllHotels = async (filters: Filters = {}): Promise<Hotel[]> => {
+    let query = 'SELECT * FROM hotels WHERE 1=1';
+    const params: any[] = [];
+
+    if (filters.destinationCityId !== undefined) {
+        query += ' AND city_id = ?';
+        params.push(filters.destinationCityId);
+    }
+
+    const [results] = await connection.query<HotelDb[]>(query, params);
 
     return results.map(hotelDb => {
         const hotel: Hotel = {

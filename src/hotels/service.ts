@@ -1,13 +1,13 @@
 import {getAllServicesByHotelId} from "../hotelServices/service";
-import hotelRepository from "../hotels/repository";
+import hotelRepository, {Filters} from "../hotels/repository";
 import {getAllRoomsByHotelId} from "../rooms/service";
 import {getAllNearbyAttractionsByHotelId} from "../nearbyAttractions/service";
 import {Gallery} from "../gallery/gallery";
 import {getAllGalleryImagesByGalleryEntries, getGalleryImagesByGalleryId} from "../gallery/service";
 import {getAllHotelRatingsByHotelIdMap} from "../hotelsRating/service";
 
-export const getAllHotels = async () => {
-    const hotels = await hotelRepository.getAllHotels();
+export const getAllHotels = async (filters: Filters = {}) => {
+    const hotels = await hotelRepository.getAllHotels(filters);
 
     const hotelIds = hotels.map(hotel => hotel.hotelId)
 
