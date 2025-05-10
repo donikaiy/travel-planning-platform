@@ -1,12 +1,18 @@
 import express, {Request, Response} from "express";
-import {getAllFlights} from "./service";
+import {getRoundTrip} from "./service";
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/round-trip', async (req: Request, res: Response) => {
     try {
-        const flights = await getAllFlights();
-        res.json(flights)
+        const roundTrip = await getRoundTrip({
+            departureCityId: req.query.departureCityId ? Number(req.query.departureCityId) : undefined,
+            destinationCityId: req.query.destinationCityId ? Number(req.query.destinationCityId) : undefined,
+            departAt: req.query.departAt ? String(req.query.departAt) : undefined,
+            returnAt: req.query.returnAt ? String(req.query.returnAt) : undefined
+        });
+
+        res.json(roundTrip)
     } catch (err: any) {
         res.status(500).json({error: err.message})
     }

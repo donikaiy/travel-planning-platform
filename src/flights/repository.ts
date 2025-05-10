@@ -2,8 +2,32 @@ import {Flight, FlightDb} from "./domain";
 import {connection} from "../repository";
 import {CityDb} from "../cities/domain";
 
-const getAllFlights = async (): Promise<Flight[]> => {
-    const [results] = await connection.query<FlightDb[]>('SELECT * FROM flights');
+export type Filters = {
+    departureCityId?: number,
+    destinationCityId?: number,
+    departAt?: string,
+}
+
+const getAllFlights = async (filters: Filters = {}): Promise<Flight[]> => {
+    const params: any[] = [];
+    let query = 'SELECT * FROM flights WHERE 1=1';
+
+    if (filters.departureCityId !== undefined) {
+        query += ' AND origin_city_id = ?';
+        params.push(filters.departureCityId);
+    }
+
+    if (filters.destinationCityId !== undefined) {
+        query += ' AND destination_city_id = ?';
+        params.push(filters.destinationCityId);
+    }
+
+    if (filters.departAt !== undefined) {
+        query += ' AND DATE(depart_at) = ?';
+        params.push(filters.departAt);
+    }
+
+    const [results] = await connection.query<FlightDb[]>(query, params);
 
     return results.map(flightDb => {
         const flight: Flight = {

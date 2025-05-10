@@ -1,9 +1,9 @@
-import flightRepository  from "../flights/repository";
+import flightRepository, {Filters} from "../flights/repository";
 import {getCitiesByIds} from "../cities/service";
 
-export const getAllFlights = async () => {
-    const [allFlights, cityIds] = await Promise.all([
-        flightRepository.getAllFlights(),
+export const getAllFlights = async (filters: Filters = {}) => {
+    const [flights, cityIds] = await Promise.all([
+        flightRepository.getAllFlights(filters),
         flightRepository.getUniqueCityIdsFromFlights()
     ])
 
@@ -13,9 +13,36 @@ export const getAllFlights = async () => {
 
     cities.forEach((city) => cityMap.set(city.cityId, city.name))
 
-    return allFlights.map(flight => ({
-        ...flight,
-        originCity: cityMap.get(flight.originCityId),
-        destinationCity: cityMap.get(flight.destinationCityId)
-    }))
+    return flights.map((flight) => {
+        return {
+            ...flight,
+            originCity: cityMap.get(flight.originCityId),
+            destinationCity: cityMap.get(flight.destinationCityId)
+        }
+    })
+}
+
+export const getRoundTrip = async ({
+                                                       departureCityId,
+                                                       destinationCityId,
+                                                       departAt,
+                                                       returnAt
+                                                   }: {
+    departureCityId?: number,
+    destinationCityId?: number,
+    departAt?: string,
+    returnAt?: string,
+}) => {
+    const departureFlights = await getAllFlights({departureCityId, destinationCityId, departAt})
+
+    const returnFlights = await getAllFlights({
+        departureCityId: destinationCityId,
+        destinationCityId: departureCityId,
+        departAt: returnAt
+    })
+
+    return {
+        departureFlights,
+        returnFlights
+    }
 }
