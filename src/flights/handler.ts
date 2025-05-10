@@ -3,7 +3,7 @@ import {getDepartureAndReturnFlights} from "./service";
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/round-trip', async (req: Request, res: Response) => {
     try {
         const filters = {
             departureCityId: req.query.departureCityId ? Number(req.query.departureCityId) : undefined,

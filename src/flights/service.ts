@@ -1,10 +1,6 @@
 import flightRepository, {Filters} from "../flights/repository";
 import {getCitiesByIds} from "../cities/service";
 
-type FlightWithExtras = Filters & {
-    returnAt?: string;
-}
-
 export const getAllFlights = async (filters: Filters = {}) => {
     const [flights, cityIds] = await Promise.all([
         flightRepository.getAllFlights(filters),
@@ -31,7 +27,12 @@ export const getDepartureAndReturnFlights = async ({
                                                        destinationCityId,
                                                        departAt,
                                                        returnAt
-                                                   }: FlightWithExtras) => {
+                                                   }: {
+    departureCityId?: number,
+    destinationCityId?: number,
+    departAt?: string,
+    returnAt?: string,
+}) => {
     const departureFlights = await getAllFlights({departureCityId, destinationCityId, departAt})
 
     const returnFlights = await getAllFlights({
