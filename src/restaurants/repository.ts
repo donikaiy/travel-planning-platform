@@ -1,8 +1,20 @@
 import {Restaurant, RestaurantDb} from "./domain";
 import {connection} from "../repository";
 
-const getAllRestaurants = async (): Promise<Restaurant[]> => {
-    const [results] = await connection.query<RestaurantDb[]>('SELECT * FROM restaurants');
+export type Filters = {
+    cityId?: number,
+}
+
+const getAllRestaurants = async (filters: Filters = {}): Promise<Restaurant[]> => {
+    let query = 'SELECT * FROM restaurants WHERE 1=1';
+    const params: any[] = [];
+
+    if(filters.cityId !== undefined) {
+        query += ' AND city_id = ?';
+        params.push(filters.cityId);
+    }
+
+    const [results] = await connection.query<RestaurantDb[]>(query, params);
 
     return results.map(restaurantDb => {
         const restaurant: Restaurant = {
