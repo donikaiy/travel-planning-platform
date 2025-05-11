@@ -7,11 +7,11 @@ export type Filters = {
 }
 
 const getAllAttractions = async (filters: Filters = {}): Promise<Attraction[]> => {
-    let query = 'SELECT * FROM attractions'
+    let query = 'SELECT * FROM attractions WHERE 1=1'
     const params: any[] = []
 
     if (filters.cityId !== undefined) {
-        query += ' WHERE city_id = ?'
+        query += ' AND city_id = ?'
         params.push(filters.cityId)
     }
 
