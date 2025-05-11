@@ -2,16 +2,16 @@ import {Restaurant, RestaurantDb} from "./domain";
 import {connection} from "../repository";
 
 export type Filters = {
-    destinationCityId?: number,
+    cityId?: number,
 }
 
 const getAllRestaurants = async (filters: Filters = {}): Promise<Restaurant[]> => {
-    let query = 'SELECT * FROM restaurants';
+    let query = 'SELECT * FROM restaurants WHERE 1=1';
     const params: any[] = [];
 
-    if(filters.destinationCityId !== undefined) {
-        query += ' WHERE city_id = ?';
-        params.push(filters.destinationCityId);
+    if(filters.cityId !== undefined) {
+        query += ' AND city_id = ?';
+        params.push(filters.cityId);
     }
 
     const [results] = await connection.query<RestaurantDb[]>(query, params);

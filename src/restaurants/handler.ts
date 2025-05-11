@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req: Request, res: Response) => {
     try {
         const restaurants = await getAllRestaurants({
-            destinationCityId: req.query.destinationCityId ? Number(req.query.destinationCityId) : undefined
+            cityId: req.query.cityId ? Number(req.query.cityId) : undefined
         });
 
         res.json(restaurants)
