@@ -3,16 +3,16 @@ import {connection} from "../repository";
 import {placeholderIds} from "../utils/database";
 
 export type Filters = {
-    destinationCityId?: number,
+    cityId?: number,
 }
 
 const getAllAttractions = async (filters: Filters = {}): Promise<Attraction[]> => {
     let query = 'SELECT * FROM attractions'
     const params: any[] = []
 
-    if (filters.destinationCityId !== undefined) {
+    if (filters.cityId !== undefined) {
         query += ' WHERE city_id = ?'
-        params.push(filters.destinationCityId)
+        params.push(filters.cityId)
     }
 
     const [results] = await connection.query<AttractionDb[]>(query, params)
