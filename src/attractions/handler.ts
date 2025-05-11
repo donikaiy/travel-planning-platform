@@ -5,7 +5,10 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const attractions = await getAllAttractions();
+        const attractions = await getAllAttractions({
+            cityId: req.query.cityId ? Number(req.query.cityId) : undefined
+        });
+
         res.json(attractions)
     } catch (err: any) {
         res.status(500).json({error: err.message})

@@ -2,8 +2,20 @@ import {Attraction, AttractionDb} from "./domain";
 import {connection} from "../repository";
 import {placeholderIds} from "../utils/database";
 
-const getAllAttractions = async (): Promise<Attraction[]> => {
-    const [results] = await connection.query<AttractionDb[]>('SELECT * FROM attractions')
+export type Filters = {
+    cityId?: number,
+}
+
+const getAllAttractions = async (filters: Filters = {}): Promise<Attraction[]> => {
+    let query = 'SELECT * FROM attractions WHERE 1=1'
+    const params: any[] = []
+
+    if (filters.cityId !== undefined) {
+        query += ' AND city_id = ?'
+        params.push(filters.cityId)
+    }
+
+    const [results] = await connection.query<AttractionDb[]>(query, params)
 
     return results.map(attractionDb => {
         const attraction: Attraction = {
@@ -48,29 +60,8 @@ const getAttractionById = async (attractionId: number): Promise<Attraction> => {
 
 const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
     const [results] = await connection.execute<AttractionDb[]>(`SELECT *
-                                                               FROM attractions
-                                                               WHERE attraction_id IN (${placeholderIds(ids)})`, ids)
-
-    return results.map(attractionDb => {
-        const attraction: Attraction = {
-            attractionId: attractionDb.attraction_id,
-            cityId: attractionDb.city_id,
-            name: attractionDb.name,
-            location: attractionDb.location,
-            imageUrl: attractionDb.image_url,
-            description: attractionDb.description,
-            openingHours: attractionDb.opening_hours,
-            bestTimeToVisit: attractionDb.best_time_to_visit,
-            ticketsWebsite: attractionDb.tickets_website,
-            additionalInformation: attractionDb.additional_information,
-        }
-
-        return attraction
-    })
-}
-
-const getAttractionsByCityId = async (cityId: number): Promise<Attraction[]> => {
-    const [results] = await connection.execute<AttractionDb[]>(`SELECT * FROM attractions WHERE city_id = ?`, [cityId])
+                                                                FROM attractions
+                                                                WHERE attraction_id IN (${placeholderIds(ids)})`, ids)
 
     return results.map(attractionDb => {
         const attraction: Attraction = {
@@ -125,6 +116,5 @@ export default {
     getAllAttractions,
     getAttractionById,
     getAttractionsByIds,
-    getAttractionsByCityId,
     getAttractionsByCityIdsMap
 }
