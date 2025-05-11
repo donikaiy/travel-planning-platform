@@ -2,8 +2,8 @@ import tourRepository from ".//repository";
 import {getAllTourProgramsByTourId} from "../tourPrograms/service";
 import {getHotelsByCityId} from "../hotels/service";
 import {getRestaurantsByCityId} from "../restaurants/service";
-import {getAttractionsByCityId} from "../attractions/service";
 import {getAllRatingsByTourIdsMap} from "../toursRating/service";
+import {getAllAttractions} from "../attractions/service";
 
 export const getAllTours = async () => {
     const tours = await tourRepository.getAllTours()
@@ -29,7 +29,7 @@ export const getTourById = async (tourId: number) => {
     const [hotels, restaurants, attractions] = await Promise.all([
         getHotelsByCityId(tour.cityId),
         getRestaurantsByCityId(tour.cityId),
-        getAttractionsByCityId(tour.cityId)
+        getAllAttractions({cityId: tour.cityId})
     ])
 
     return {

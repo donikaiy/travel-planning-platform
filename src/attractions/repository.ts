@@ -81,29 +81,6 @@ const getAttractionsByIds = async (ids: number[]): Promise<Attraction[]> => {
     })
 }
 
-const getAttractionsByCityId = async (cityId: number): Promise<Attraction[]> => {
-    const [results] = await connection.execute<AttractionDb[]>(`SELECT *
-                                                                FROM attractions
-                                                                WHERE city_id = ?`, [cityId])
-
-    return results.map(attractionDb => {
-        const attraction: Attraction = {
-            attractionId: attractionDb.attraction_id,
-            cityId: attractionDb.city_id,
-            name: attractionDb.name,
-            location: attractionDb.location,
-            imageUrl: attractionDb.image_url,
-            description: attractionDb.description,
-            openingHours: attractionDb.opening_hours,
-            bestTimeToVisit: attractionDb.best_time_to_visit,
-            ticketsWebsite: attractionDb.tickets_website,
-            additionalInformation: attractionDb.additional_information,
-        }
-
-        return attraction
-    })
-}
-
 const getAttractionsByCityIdsMap = async (ids: number[]): Promise<Map<number, Attraction[]>> => {
     const [results] = await connection.execute<AttractionDb[]>(`SELECT *
                                                                 FROM attractions
@@ -139,6 +116,5 @@ export default {
     getAllAttractions,
     getAttractionById,
     getAttractionsByIds,
-    getAttractionsByCityId,
     getAttractionsByCityIdsMap
 }
