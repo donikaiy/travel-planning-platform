@@ -1,5 +1,6 @@
 import type {Restaurant, RestaurantDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
+import type {QueryResult, ResultSetHeader} from "mysql2";
 
 export type Filters = {
     cityId?: number,
@@ -47,4 +48,35 @@ const getRestaurantsByCityId = async (cityId: number): Promise<Restaurant[]> => 
     })
 }
 
-export default {getAllRestaurants, getRestaurantsByCityId}
+const checkRestaurantExists = async (name: string, cityId: number): Promise<any> => {
+    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM restaurants WHERE name = ? AND city_id = ?) AS restaurantExists', [name, cityId]);
+
+    return result
+}
+
+const createRestaurant = async (cityId: number, name: string, location: string, imageUrl: string, priceSymbols: string): Promise<Restaurant> => {
+    const [result] = await connection.execute<ResultSetHeader>('INSERT INTO restaurants (city_id, name, location, image_url, price_symbols) VALUES (?, ?, ?, ?, ?)', [cityId, name, location, imageUrl, priceSymbols]);
+
+    return {
+        restaurantId: result.insertId,
+        cityId,
+        name,
+        location,
+        imageUrl,
+        priceSymbols,
+    }
+}
+
+const deleteRestaurantById = async (restaurantId: number): Promise<QueryResult> => {
+    const [result] = await connection.execute('DELETE FROM restaurants WHERE restaurant_id = ?', [restaurantId]);
+
+    return result
+}
+
+const updateRestaurantById = async (restaurantId: number, cityId: number, name: string, location: string, imageUrl: string, priceSymbols: string): Promise<QueryResult> => {
+    const [result] = await connection.execute('UPDATE restaurants SET city_id = ?, name = ?, location = ?, image_url = ?, price_symbols = ? WHERE restaurant_id = ?', [cityId, name, location, imageUrl, priceSymbols, restaurantId]);
+
+    return result
+}
+
+export default {getAllRestaurants, getRestaurantsByCityId, checkRestaurantExists, createRestaurant, deleteRestaurantById, updateRestaurantById}
