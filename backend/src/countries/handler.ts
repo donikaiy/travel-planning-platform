@@ -31,7 +31,7 @@ router.post('/', async (req: Request, res: Response) => {
         }
 
         const newCountry = await createCountry(req.body.continentId, req.body.name, req.body.galleryId, req.body.history)
-        res.status(201).json({message: "Country created successfully!", country: newCountry})
+        res.status(201).json(newCountry)
     } catch (err: any) {
         res.status(500).json({error: err.message})
     }
