@@ -1,6 +1,7 @@
 import flightRepository from "./repository.ts";
-import type {Filters} from "./repository.js"
+import type {Filters} from "./repository.ts"
 import {getCitiesByIds} from "../cities/service.ts";
+import {ALREADY_EXISTS} from "../utils/responseMessages.ts";
 
 export const getAllFlights = async (filters: Filters = {}) => {
     const [flights, cityIds] = await Promise.all([
@@ -47,3 +48,26 @@ export const getRoundTrip = async ({
         returnFlights
     }
 }
+
+export const checkFlightExists = async (originCityId: number, destinationCityId: number, departAt: string, arriveAt: string, airline: string) => {
+    return flightRepository.checkFlightExists(originCityId, destinationCityId, departAt, arriveAt, airline)
+}
+
+export const createFlight = async (originCityId: number, destinationCityId: number, departAt: string, arriveAt: string, numberOfStops: number, price: number, imageUrl: string, airline: string) => {
+    const flightExists = await checkFlightExists(originCityId, destinationCityId, departAt, arriveAt, airline)
+
+    if (flightExists) {
+        throw new Error(ALREADY_EXISTS)
+    }
+
+    return flightRepository.createFlight(originCityId, destinationCityId, departAt, arriveAt, numberOfStops, price, imageUrl, airline)
+}
+
+export const deleteFlightById = async (flightId: number) => {
+    return flightRepository.deleteFlightById(flightId)
+}
+
+export const updateFlightById = async (flightId: number, originCityId: number, destinationCityId: number, departAt: string, arriveAt: string, numberOfStops: number, price: number, imageUrl: string, airline: string) => {
+    return flightRepository.updateFlightById(flightId, originCityId, destinationCityId, departAt, arriveAt, numberOfStops, price, imageUrl, airline)
+}
+
