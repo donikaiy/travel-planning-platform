@@ -2,6 +2,7 @@ import type {Attraction, AttractionDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
 import {placeholderIds} from "../utils/database.ts";
 import type {QueryResult, ResultSetHeader} from "mysql2";
+import type { Exist } from "../types/exist.d.ts";
 
 export type Filters = {
     cityId?: number,
@@ -113,10 +114,10 @@ const getAttractionsByCityIdsMap = async (ids: number[]): Promise<Map<number, At
     return attractionMap
 }
 
-const checkAttractionExists = async (name: string): Promise<any> => {
-    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM attractions WHERE name = ?) AS attractionExists', [name])
+const checkAttractionExists = async (name: string): Promise<boolean> => {
+    const [result] = await connection.execute<Exist[]>('SELECT EXISTS(SELECT * FROM attractions WHERE name = ?) AS exist', [name])
 
-    return result;
+    return result[0]?.exist === 1
 }
 
 const createAttraction = async (cityId: number, name: string, location: string, imageUrl: string, description: string, openingHours: string,
