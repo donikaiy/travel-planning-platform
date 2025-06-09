@@ -1,6 +1,7 @@
 import cityRepository from "../cities/repository.ts";
 import {getAttractionsByCityIdsMap} from "../attractions/service.ts";
 import type {CityWithExtras} from "./domain.d.ts";
+import {ALREADY_EXISTS} from "../utils/responseMessages.ts";
 
 export const getAllCities = async ({includeAttractions = false}): Promise<CityWithExtras[]> => {
     const cities:CityWithExtras[] = await cityRepository.getAllCities();
@@ -26,6 +27,12 @@ export const checkCityExists = async (name: string) => {
 }
 
 export const createCity = async (countryId: number, name: string, imageUrl: string) => {
+    const cityExists = await checkCityExists(name)
+
+    if (cityExists) {
+        throw new Error(ALREADY_EXISTS)
+    }
+
     return cityRepository.createCity(countryId, name, imageUrl)
 }
 

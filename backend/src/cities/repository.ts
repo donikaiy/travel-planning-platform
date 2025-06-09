@@ -2,6 +2,7 @@ import type {City, CityDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
 import type {QueryResult, ResultSetHeader} from "mysql2";
 import {placeholderIds} from "../utils/database.ts";
+import type { Exist } from "../types/exist.d.ts";
 
 const getAllCities = async (): Promise<City[]> => {
     const [results] = await connection.query<CityDb[]>('SELECT * FROM cities');
@@ -35,10 +36,10 @@ const getCityById = async (cityId: number): Promise<City> => {
     }
 }
 
-const checkCityExists = async (name: string): Promise<any> => {
-    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM cities WHERE name = ?) AS cityExists', [name])
+const checkCityExists = async (name: string): Promise<boolean> => {
+    const [result] = await connection.execute<Exist[]>('SELECT EXISTS(SELECT * FROM cities WHERE name = ?) AS exist', [name])
 
-    return result
+    return result[0]?.exist === 1
 }
 
 const createCity = async (countryId: number, name: string, imageUrl: string): Promise<City> => {
