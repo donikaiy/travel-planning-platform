@@ -1,6 +1,7 @@
 import type {Attraction, AttractionDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
 import {placeholderIds} from "../utils/database.ts";
+import type {QueryResult, ResultSetHeader} from "mysql2";
 
 export type Filters = {
     cityId?: number,
@@ -112,9 +113,50 @@ const getAttractionsByCityIdsMap = async (ids: number[]): Promise<Map<number, At
     return attractionMap
 }
 
+const checkAttractionExists = async (name: string): Promise<any> => {
+    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM attractions WHERE name = ?) AS attractionExists', [name])
+
+    return result;
+}
+
+const createAttraction = async (cityId: number, name: string, location: string, imageUrl: string, description: string, openingHours: string,
+                                bestTimeToVisit: string, ticketsWebsite: string, additionalInformation: string): Promise<Attraction> => {
+    const [result] = await connection.execute<ResultSetHeader>('INSERT INTO attractions (city_id, name, location, image_url, description, opening_hours, best_time_to_visit, tickets_website, additional_information) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [cityId, name, location, imageUrl, description, openingHours, bestTimeToVisit, ticketsWebsite, additionalInformation])
+
+    return {
+        attractionId: result.insertId,
+        cityId,
+        name,
+        location,
+        imageUrl,
+        description,
+        openingHours,
+        bestTimeToVisit,
+        ticketsWebsite,
+        additionalInformation,
+    }
+}
+
+const deleteAttractionById = async (attractionId: number): Promise<QueryResult> => {
+    const [result] = await connection.execute('DELETE FROM attractions WHERE attraction_id = ?', [attractionId])
+
+    return result
+}
+
+const updateAttractionById = async (attractionId: number, cityId: number, name: string, location: string, imageUrl: string, description: string, openingHours: string,
+                                    bestTimeToVisit: string, ticketsWebsite: string, additionalInformation: string): Promise<QueryResult> => {
+    const [result] = await connection.execute('UPDATE attractions SET city_id = ?, name = ?, location = ?, image_url = ?, description = ?, opening_hours = ?, best_time_to_visit = ?, tickets_website = ?, additional_information = ? WHERE attraction_id = ?', [cityId, name, location, imageUrl, description, openingHours, bestTimeToVisit, ticketsWebsite, additionalInformation, attractionId])
+
+    return result
+}
+
 export default {
     getAllAttractions,
     getAttractionById,
     getAttractionsByIds,
-    getAttractionsByCityIdsMap
+    getAttractionsByCityIdsMap,
+    checkAttractionExists,
+    createAttraction,
+    deleteAttractionById,
+    updateAttractionById
 }
