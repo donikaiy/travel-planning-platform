@@ -1,6 +1,7 @@
 import type {Restaurant, RestaurantDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
 import type {QueryResult, ResultSetHeader} from "mysql2";
+import type { Exist } from "../types/exist.d.ts";
 
 export type Filters = {
     cityId?: number,
@@ -48,10 +49,10 @@ const getRestaurantsByCityId = async (cityId: number): Promise<Restaurant[]> => 
     })
 }
 
-const checkRestaurantExists = async (name: string, cityId: number): Promise<any> => {
-    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM restaurants WHERE name = ? AND city_id = ?) AS restaurantExists', [name, cityId]);
+const checkRestaurantExists = async (name: string, cityId: number): Promise<boolean> => {
+    const [result] = await connection.execute<Exist[]>('SELECT EXISTS(SELECT * FROM restaurants WHERE name = ? AND city_id = ?) AS exist', [name, cityId]);
 
-    return result
+    return result[0]?.exist === 1
 }
 
 const createRestaurant = async (cityId: number, name: string, location: string, imageUrl: string, priceSymbols: string): Promise<Restaurant> => {
