@@ -1,7 +1,8 @@
 import type {City, CityDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
-import type {ResultSetHeader} from "mysql2";
+import type {QueryResult, ResultSetHeader} from "mysql2";
 import {placeholderIds} from "../utils/database.ts";
+import type { Exist } from "../types/exist.d.ts";
 
 const getAllCities = async (): Promise<City[]> => {
     const [results] = await connection.query<CityDb[]>('SELECT * FROM cities');
@@ -35,10 +36,10 @@ const getCityById = async (cityId: number): Promise<City> => {
     }
 }
 
-const checkCityExists = async (name: string): Promise<any> => {
-    const [result] = await connection.execute('SELECT EXISTS(SELECT * FROM cities WHERE name = ?) AS cityExists', [name])
+const checkCityExists = async (name: string): Promise<boolean> => {
+    const [result] = await connection.execute<Exist[]>('SELECT EXISTS(SELECT * FROM cities WHERE name = ?) AS exist', [name])
 
-    return result
+    return result[0]?.exist === 1
 }
 
 const createCity = async (countryId: number, name: string, imageUrl: string): Promise<City> => {
@@ -107,4 +108,16 @@ const getCitiesByCountryIdsMap = async (ids: number[]): Promise<Map<number, City
     return countryMap
 }
 
-export default {getAllCities, getCityById, checkCityExists, createCity, getCitiesByIds, getCitiesByCountryIdsMap, getAllCitiesByCountryId}
+const deleteCityById = async (cityId: number): Promise<QueryResult> => {
+    const [result] = await connection.execute('DELETE FROM cities WHERE city_id = ?', [cityId])
+
+    return result
+}
+
+const updateCityById = async (cityId: number, countryId: number, name: string, imageUrl: string): Promise<QueryResult> => {
+    const [result] = await connection.execute('UPDATE cities SET country_id = ?, name = ?, image_url = ? WHERE city_id = ?', [countryId, name, imageUrl, cityId]);
+
+    return result
+}
+
+export default {getAllCities, getCityById, checkCityExists, createCity, getCitiesByIds, getCitiesByCountryIdsMap, getAllCitiesByCountryId, deleteCityById, updateCityById}

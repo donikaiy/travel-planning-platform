@@ -1,6 +1,7 @@
 import express from "express";
 import type {Request, Response} from "express";
-import {checkCityExists, createCity, getAllCities, getCityById} from "./service.ts";
+import {createCity, deleteCityById, getAllCities, getCityById, updateCityById} from "./service.ts";
+import {ALREADY_EXISTS} from "../utils/responseMessages.ts";
 
 const router = express.Router();
 
@@ -24,14 +25,31 @@ router.get('/:cityId', async (req: Request, res: Response)=> {
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const check = await checkCityExists(req.body.name);
-        if (check[0].cityExists) {
-            res.status(409).json({error: "City already exists."})
+        const newCity = await createCity(req.body.countryId, req.body.name, req.body.imageUrl)
+        res.status(201).json(newCity)
+    } catch (err: any) {
+        if (err.message === ALREADY_EXISTS) {
+            res.status(409).json({error: err.message});
             return
         }
 
-        const newCity = await createCity(req.body.countryId, req.body.name, req.body.imageUrl)
-        res.status(201).json({message: "City created successfully!", country: newCity})
+        res.status(500).json({error: err.message})
+    }
+})
+
+router.delete('/', async (req: Request, res: Response) => {
+    try {
+        await deleteCityById(Number(req.body.cityId))
+        res.status(200)
+    } catch (err: any) {
+        res.status(500).json({error: err.message})
+    }
+})
+
+router.put('/', async (req: Request, res: Response) => {
+    try {
+        await updateCityById(req.body.cityId, req.body.countryId, req.body.name, req.body.imageUrl)
+        res.status(200)
     } catch (err: any) {
         res.status(500).json({error: err.message})
     }
