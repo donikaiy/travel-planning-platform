@@ -1,6 +1,6 @@
 import type {City, CityDb} from "./domain.d.ts";
 import {connection} from "../repository.ts";
-import type {ResultSetHeader} from "mysql2";
+import type {QueryResult, ResultSetHeader} from "mysql2";
 import {placeholderIds} from "../utils/database.ts";
 
 const getAllCities = async (): Promise<City[]> => {
@@ -107,4 +107,16 @@ const getCitiesByCountryIdsMap = async (ids: number[]): Promise<Map<number, City
     return countryMap
 }
 
-export default {getAllCities, getCityById, checkCityExists, createCity, getCitiesByIds, getCitiesByCountryIdsMap, getAllCitiesByCountryId}
+const deleteCityById = async (cityId: number): Promise<QueryResult> => {
+    const [result] = await connection.execute('DELETE FROM cities WHERE city_id = ?', [cityId])
+
+    return result
+}
+
+const updateCityById = async (cityId: number, countryId: number, name: string, imageUrl: string): Promise<QueryResult> => {
+    const [result] = await connection.execute('UPDATE cities SET country_id = ?, name = ?, image_url = ? WHERE city_id = ?', [countryId, name, imageUrl, cityId]);
+
+    return result
+}
+
+export default {getAllCities, getCityById, checkCityExists, createCity, getCitiesByIds, getCitiesByCountryIdsMap, getAllCitiesByCountryId, deleteCityById, updateCityById}

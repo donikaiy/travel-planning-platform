@@ -44,3 +44,11 @@ export const getCitiesByIds = async (ids: number[]) => {
 export const getCitiesByCountryIdsMap = async (ids: number[]) => {
     return cityRepository.getCitiesByCountryIdsMap(ids)
 }
+
+export const deleteCityById = async (cityId: number) => {
+    return cityRepository.deleteCityById(cityId)
+}
+
+export const updateCityById = async (cityId: number, countryId: number, name: string, imageUrl: string) => {
+    return cityRepository.updateCityById(cityId, countryId, name, imageUrl)
+}

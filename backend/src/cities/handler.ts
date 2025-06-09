@@ -1,6 +1,6 @@
 import express from "express";
 import type {Request, Response} from "express";
-import {checkCityExists, createCity, getAllCities, getCityById} from "./service.ts";
+import {checkCityExists, createCity, deleteCityById, getAllCities, getCityById, updateCityById} from "./service.ts";
 
 const router = express.Router();
 
@@ -31,7 +31,25 @@ router.post('/', async (req: Request, res: Response) => {
         }
 
         const newCity = await createCity(req.body.countryId, req.body.name, req.body.imageUrl)
-        res.status(201).json({message: "City created successfully!", country: newCity})
+        res.status(201).json(newCity)
+    } catch (err: any) {
+        res.status(500).json({error: err.message})
+    }
+})
+
+router.delete('/', async (req: Request, res: Response) => {
+    try {
+        await deleteCityById(Number(req.body.cityId))
+        res.status(201).json({message: "City deleted."})
+    } catch (err: any) {
+        res.status(500).json({error: err.message})
+    }
+})
+
+router.put('/', async (req: Request, res: Response) => {
+    try {
+        await updateCityById(req.body.cityId, req.body.countryId, req.body.name, req.body.imageUrl)
+        res.status(201).json({message: "City updated."})
     } catch (err: any) {
         res.status(500).json({error: err.message})
     }
