@@ -1,5 +1,6 @@
 import attractionRepository from './repository.ts';
 import type {Filters} from './repository.ts';
+import {ALREADY_EXISTS} from "../utils/responseMessages.ts";
 
 export const getAllAttractions = async (filters: Filters = {}) => {
     return attractionRepository.getAllAttractions(filters)
@@ -15,4 +16,28 @@ export const getAttractionsByIds = async (ids: number[]) => {
 
 export const getAttractionsByCityIdsMap = async (ids: number[]) => {
     return attractionRepository.getAttractionsByCityIdsMap(ids)
+}
+
+export const checkAttractionExists = async (name: string) => {
+    return attractionRepository.checkAttractionExists(name)
+}
+
+export const createAttraction = async (cityId: number, name: string, location: string, imageUrl: string, description: string, openingHours: string,
+                                       bestTimeToVisit: string, ticketsWebsite: string, additionalInformation: string) => {
+    const attractionExists = await checkAttractionExists(name)
+
+    if (attractionExists) {
+        throw new Error(ALREADY_EXISTS)
+    }
+
+    return attractionRepository.createAttraction(cityId, name, location, imageUrl, description, openingHours, bestTimeToVisit, ticketsWebsite, additionalInformation)
+}
+
+export const deleteAttractionById = async (attractionId: number) => {
+    await attractionRepository.deleteAttractionById(attractionId);
+}
+
+export const updateAttractionById = async (attractionId: number, cityId: number, name: string, location: string, imageUrl: string, description: string, openingHours: string,
+                                           bestTimeToVisit: string, ticketsWebsite: string, additionalInformation: string) => {
+    return attractionRepository.updateAttractionById(attractionId, cityId, name, location, imageUrl, description, openingHours, bestTimeToVisit, ticketsWebsite, additionalInformation)
 }
