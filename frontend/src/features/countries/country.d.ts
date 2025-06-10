@@ -1,6 +1,6 @@
-import {City} from "@/types/city";
-import {Cuisine} from "@/types/cuisine";
-import {Gallery} from "@/types/gallery";
+import {City} from "../cities/city"
+import {Cuisine} from "./cuisine"
+import {Gallery} from "@/types/gallery"
 
 export type Country = {
     countryId: number,
