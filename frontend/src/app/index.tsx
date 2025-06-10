@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Home from "./routes/home.tsx"
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import Country from "@/app/routes/country.tsx";
+import Flights from "./routes/flights.tsx";
 
 const Index = () => {
     const queryClient = new QueryClient()
@@ -12,6 +13,7 @@ const Index = () => {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/destinations/:countryId" element={<Country/>}/>
+                    <Route path="/flights" element={<Flights/>}/>
                 </Routes>
             </BrowserRouter>
         </QueryClientProvider>
