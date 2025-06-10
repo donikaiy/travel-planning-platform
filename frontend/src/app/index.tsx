@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom"
-import Home from "./pages/home"
+import Home from "./routes/home.tsx"
 
-const App = () => {
+const Index = () => {
     return (
         <BrowserRouter>
             <Routes>
@@ -12,4 +12,4 @@ const App = () => {
     )
 }
 
-export default App
+export default Index
