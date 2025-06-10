@@ -7,6 +7,8 @@ import Destinations from "./routes/destinations.tsx";
 import Hotels from "@/app/routes/hotels.tsx";
 import Hotel from "@/app/routes/hotel.tsx";
 import Restaurants from "@/app/routes/restaurants.tsx";
+import Attractions from "./routes/attractions.tsx";
+import Attraction from "@/app/routes/attraction.tsx";
 
 const Index = () => {
     const queryClient = new QueryClient()
@@ -22,6 +24,8 @@ const Index = () => {
                     <Route path="/hotels" element={<Hotels/>}/>
                     <Route path="/hotels/:hotelId" element={<Hotel/>}/>
                     <Route path="/restaurants" element={<Restaurants/>}/>
+                    <Route path="/attractions" element={<Attractions/>}/>
+                    <Route path="/attractions/:attractionId" element={<Attraction/>}/>
                 </Routes>
             </BrowserRouter>
         </QueryClientProvider>
