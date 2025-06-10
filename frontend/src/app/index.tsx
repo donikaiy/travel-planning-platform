@@ -17,6 +17,7 @@ import {TravelProvider} from "@/contexts/travelContext.tsx";
 import * as React from "react";
 import {SidebarProvider} from "@/components/ui/sidebar.tsx";
 import AdminAttractions from "@/app/routes/admin/adminAttractions.tsx";
+import AdminCities from "./routes/admin/adminCities.tsx";
 
 const Index = () => {
     const queryClient = new QueryClient()
@@ -46,6 +47,8 @@ const Index = () => {
                             <Route path="/travel-guide" element={<TravelGuide/>}/>
                             <Route path="/travel-plan" element={<TravelPlan/>}/>
                             <Route path="/admin">
+                                <Route index element={<AdminCities/>}/>
+                                <Route path="cities" element={<AdminCities/>}/>
                                 <Route path="attractions" element={<AdminAttractions/>}/>
                             </Route>
                         </Routes>
