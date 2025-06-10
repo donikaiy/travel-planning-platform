@@ -1,12 +1,18 @@
 import Navigation from "@/components/NavigationMenu/navigationMenu.tsx";
 import ListCheckIcon from "@/components/ListCheckIcon/listCheckIcon.tsx";
 import Timeline from "@/components/Timeline/timeline.tsx";
+import Itinerary from "@/components/Itinerary/itinerary.tsx";
+import {TourData} from "@/utils/tourData.ts";
+import * as React from "react";
 import Footer from "@/components/Footer/footer.tsx";
 import {useGetAllCountriesWithCities} from "@/features/countries/api/useCountry.ts";
-import SearchSection from "@/features/cities/components/SearchSection/searchSection.tsx";
+import SearchSection from "@/features/cities/components/SearchSection/searchSection";
+
 
 const Home = () => {
     const {data: countries} = useGetAllCountriesWithCities();
+
+    const [selectedDay, setSelectedDay] = React.useState<number>(1)
 
     return (
         <div>
@@ -104,6 +110,18 @@ const Home = () => {
                     </div>
                     <div >
                         <Timeline/>
+                    </div>
+                </section>
+
+                <section className="flex flex-col gap-4 items-center">
+                    <h2 className="text-[28px] lg:text-[36px] text-center lg:text-left font-semibold text-gray-800">{TourData.name}</h2>
+                    <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-20">
+                        <Itinerary tour={TourData} selectedDay={selectedDay} setSelectedDay={setSelectedDay}/>
+                        <img
+                            src={TourData.imageUrl}
+                            alt={`Image of ${TourData.name}`}
+                            className="rounded-lg w-full h-64 object-cover flex-1"
+                        />
                     </div>
                 </section>
 
