@@ -14,6 +14,8 @@ import Tour from "@/app/routes/tour.tsx";
 import TravelGuide from "./routes/travelGuide.tsx";
 import TravelPlan from "@/app/routes/travelPlan.tsx";
 import {TravelProvider} from "@/contexts/travelContext.tsx";
+import * as React from "react";
+import {SidebarProvider} from "@/components/ui/sidebar.tsx";
 
 const Index = () => {
     const queryClient = new QueryClient()
@@ -21,23 +23,30 @@ const Index = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <TravelProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Home/>}/>
-                        <Route path="/destinations/:countryId" element={<Country/>}/>
-                        <Route path="/flights" element={<Flights/>}/>
-                        <Route path="/destinations" element={<Destinations/>}/>
-                        <Route path="/hotels" element={<Hotels/>}/>
-                        <Route path="/hotels/:hotelId" element={<Hotel/>}/>
-                        <Route path="/restaurants" element={<Restaurants/>}/>
-                        <Route path="/attractions" element={<Attractions/>}/>
-                        <Route path="/attractions/:attractionId" element={<Attraction/>}/>
-                        <Route path="/tours" element={<Tours/>}/>
-                        <Route path="/tours/:tourId" element={<Tour/>}/>
-                        <Route path="/travel-guide" element={<TravelGuide/>}/>
-                        <Route path="/travel-plan" element={<TravelPlan/>}/>
-                    </Routes>
-                </BrowserRouter>
+                <SidebarProvider style={
+                    {
+                        "--sidebar-width": "15rem",
+                        "overflow": "hidden"
+                    } as React.CSSProperties
+                }>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Home/>}/>
+                            <Route path="/destinations/:countryId" element={<Country/>}/>
+                            <Route path="/flights" element={<Flights/>}/>
+                            <Route path="/destinations" element={<Destinations/>}/>
+                            <Route path="/hotels" element={<Hotels/>}/>
+                            <Route path="/hotels/:hotelId" element={<Hotel/>}/>
+                            <Route path="/restaurants" element={<Restaurants/>}/>
+                            <Route path="/attractions" element={<Attractions/>}/>
+                            <Route path="/attractions/:attractionId" element={<Attraction/>}/>
+                            <Route path="/tours" element={<Tours/>}/>
+                            <Route path="/tours/:tourId" element={<Tour/>}/>
+                            <Route path="/travel-guide" element={<TravelGuide/>}/>
+                            <Route path="/travel-plan" element={<TravelPlan/>}/>
+                        </Routes>
+                    </BrowserRouter>
+                </SidebarProvider>
             </TravelProvider>
         </QueryClientProvider>
 
