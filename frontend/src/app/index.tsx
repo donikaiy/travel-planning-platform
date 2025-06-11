@@ -19,6 +19,7 @@ import {SidebarProvider} from "@/components/ui/sidebar.tsx";
 import AdminAttractions from "@/app/routes/admin/adminAttractions.tsx";
 import AdminCities from "./routes/admin/adminCities.tsx";
 import AdminFlights from "@/app/routes/admin/adminFlights.tsx";
+import AdminRestaurants from "@/app/routes/admin/adminRestaurants.tsx";
 
 const Index = () => {
     const queryClient = new QueryClient()
@@ -51,6 +52,7 @@ const Index = () => {
                                 <Route index element={<AdminCities/>}/>
                                 <Route path="cities" element={<AdminCities/>}/>
                                 <Route path="flights" element={<AdminFlights/>}/>
+                                <Route path="restaurants" element={<AdminRestaurants/>}/>
                                 <Route path="attractions" element={<AdminAttractions/>}/>
                             </Route>
                         </Routes>
