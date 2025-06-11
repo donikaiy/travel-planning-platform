@@ -12,28 +12,33 @@ import Attraction from "@/app/routes/attraction.tsx";
 import Tours from "./routes/tours.tsx";
 import Tour from "@/app/routes/tour.tsx";
 import TravelGuide from "./routes/travelGuide.tsx";
+import TravelPlan from "@/app/routes/travelPlan.tsx";
+import {TravelProvider} from "@/contexts/travelContext.tsx";
 
 const Index = () => {
     const queryClient = new QueryClient()
 
     return (
         <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/destinations/:countryId" element={<Country/>}/>
-                    <Route path="/flights" element={<Flights/>}/>
-                    <Route path="/destinations" element={<Destinations/>}/>
-                    <Route path="/hotels" element={<Hotels/>}/>
-                    <Route path="/hotels/:hotelId" element={<Hotel/>}/>
-                    <Route path="/restaurants" element={<Restaurants/>}/>
-                    <Route path="/attractions" element={<Attractions/>}/>
-                    <Route path="/attractions/:attractionId" element={<Attraction/>}/>
-                    <Route path="/tours" element={<Tours/>}/>
-                    <Route path="/tours/:tourId" element={<Tour/>}/>
-                    <Route path="/travel-guide" element={<TravelGuide/>}/>
-                </Routes>
-            </BrowserRouter>
+            <TravelProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/destinations/:countryId" element={<Country/>}/>
+                        <Route path="/flights" element={<Flights/>}/>
+                        <Route path="/destinations" element={<Destinations/>}/>
+                        <Route path="/hotels" element={<Hotels/>}/>
+                        <Route path="/hotels/:hotelId" element={<Hotel/>}/>
+                        <Route path="/restaurants" element={<Restaurants/>}/>
+                        <Route path="/attractions" element={<Attractions/>}/>
+                        <Route path="/attractions/:attractionId" element={<Attraction/>}/>
+                        <Route path="/tours" element={<Tours/>}/>
+                        <Route path="/tours/:tourId" element={<Tour/>}/>
+                        <Route path="/travel-guide" element={<TravelGuide/>}/>
+                        <Route path="/travel-plan" element={<TravelPlan/>}/>
+                    </Routes>
+                </BrowserRouter>
+            </TravelProvider>
         </QueryClientProvider>
 
     )
